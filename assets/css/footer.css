@@ -1,0 +1,58 @@
+
+.site-footer {
+  margin-top: 48px;
+  padding-top: 32px;
+  background: var(--green-dark);
+  border-top: 4px solid var(--gold-light);
+  color: var(--white);
+}
+.site-footer a { color: var(--white); font-weight: 600; }
+.site-footer a:hover { text-decoration: none; }
+.site-footer :focus-visible { outline: 2px solid var(--white); outline-offset: 2px; }
+
+.footer-gov-logo { height: 84px; width: auto; }
+.footer-crest   { height: 150px; width: auto; }
+
+.footer-title {
+  margin-bottom: 12px;
+  font-size: var(--fs-sh1);
+  font-weight: 700;
+}
+.contact-list { margin: 0; text-align: left; }
+.contact-list a { overflow-wrap: anywhere; }
+
+
+.contact-item {
+  position: relative;
+  min-height: 24px;
+  margin-bottom: 10px;
+  padding-left: 36px;
+}
+.contact-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 22px;
+  height: 22px;
+  background: center / contain no-repeat;
+}
+.contact-address::before { background-image: url("../img/icons/location.svg"); }
+.contact-phone::before  { background-image: url("../img/icons/phone.svg"); }
+.contact-email::before    { background-image: url("../img/icons/email.svg"); }
+.contact-hours::before   { background-image: url("../img/icons/hours.svg"); }
+.contact-social::before    { background-image: url("../img/icons/link.svg"); }
+
+.footer-legal {
+  margin: 32px 0 0;
+  padding-block: 16px;
+  max-width: none;
+  border-top: 1px solid rgba(255, 255, 255, .25);
+  font-size: var(--fs-sd);
+  text-align: center;
+}
+
+
+@media (max-width: 767.98px) {
+  .contact-list { display: inline-block; max-width: 340px; }
+}

@@ -1,0 +1,116 @@
+/* home.css · Inicio */
+
+/* Hero carousel (auto-slides, no controls) */
+.hero { padding-top: 24px; }
+.hero-slide {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.hero-text { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 16px; }
+.hero-title { margin: 0; font-size: var(--fs-h2); font-weight: 700; line-height: 1.15; }
+.hero-lead { margin: 0; color: var(--text-muted); font-size: var(--fs-sh1); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero .photo { aspect-ratio: 4 / 3; }
+@media (min-width: 900px) {
+  .hero-slide { grid-template-columns: 1fr 1fr; padding: 40px; gap: 40px; }
+  .hero-title { font-size: var(--fs-h1); }
+  .hero .photo { aspect-ratio: 5 / 4; }
+}
+
+/* Quick links */
+.quick-links { display: grid; gap: 12px; margin-top: 24px; }
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  color: var(--text);
+  text-decoration: none;
+}
+.quick-link:hover { border-color: var(--green); border-left-color: var(--gold); }
+.quick-link:focus-visible { outline: 3px solid var(--info); outline-offset: 2px; }
+.quick-icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--green-soft) center / 24px no-repeat;
+}
+.quick-calendar { background-image: url("../../img/icons/calendar.svg"); }
+.quick-document { background-image: url("../../img/icons/document.svg"); }
+.quick-edit     { background-image: url("../../img/icons/edit.svg"); }
+.quick-link strong { display: block; }
+.quick-link span { font-size: var(--fs-sd); color: var(--text-muted); }
+@media (min-width: 700px) { .quick-links { grid-template-columns: repeat(3, 1fr); } }
+
+/* Careers: 3 on mobile, 6 on tablet, 8 on desktop */
+.career-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+.career-grid > li:nth-child(n+4) { display: none; }
+@media (min-width: 700px) {
+  .career-grid { grid-template-columns: repeat(2, 1fr); }
+  .career-grid > li:nth-child(n+4) { display: block; }
+  .career-grid > li:nth-child(n+7) { display: none; }
+}
+@media (min-width: 1024px) {
+  .career-grid { grid-template-columns: repeat(4, 1fr); }
+  .career-grid > li:nth-child(n+7) { display: block; }
+}
+
+/* Steps */
+.steps { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; counter-reset: step; }
+.step {
+  position: relative;
+  padding: 20px 20px 20px 68px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--green);
+  color: var(--white);
+  font-weight: 700;
+}
+.step strong { display: block; }
+.step span { color: var(--text-muted); }
+@media (min-width: 700px)  { .steps { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+
+/* Cards with a photo (news, student life) */
+.card-grid { display: grid; gap: 24px; }
+@media (min-width: 700px)  { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+.card-item .card-title { margin-top: 8px; }
+
+/* Contact form + map */
+.contact-box {
+  display: grid;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.contact-form { padding: 24px; }
+.contact-form h3 { margin: 0 0 4px; font-size: var(--fs-sh0); font-weight: 700; }
+.contact-map { min-height: 320px; border: 0; width: 100%; height: 100%; }
+@media (min-width: 900px) {
+  .contact-box { grid-template-columns: 1fr 1fr; }
+  .contact-form { padding: 32px; }
+}

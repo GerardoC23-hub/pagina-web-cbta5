@@ -1,0 +1,166 @@
+/* components.css · reusable pieces: buttons, cards, tags, photo placeholder */
+
+/* Buttons */
+.btn-main,
+.btn-outline-main {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--field-height);
+  padding: 0 24px;
+  border: 2px solid var(--green);
+  border-radius: var(--radius);
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color .15s, color .15s, border-color .15s;
+}
+.btn-main { background: var(--green); color: var(--white); }
+.btn-main:hover { background: var(--green-hover); border-color: var(--green-hover); color: var(--white); }
+.btn-outline-main { background: transparent; color: var(--green); }
+.btn-outline-main:hover { background: var(--green-soft); color: var(--green-hover); }
+.btn-main:focus-visible,
+.btn-outline-main:focus-visible { outline: 3px solid var(--info); outline-offset: 2px; }
+
+/* Section title with burgundy accent bar */
+.section-title {
+  margin: 0;
+  font-size: var(--fs-h2);
+  font-weight: 700;
+}
+.section-title::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 4px;
+  margin-bottom: 16px;
+  background: var(--burgundy);
+}
+.section-subtitle { margin: 4px 0 0; color: var(--text-muted); }
+
+/* Card */
+.card-item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.card-item { position: relative; }
+.card-item:hover { border-color: var(--green); box-shadow: 0 4px 16px rgba(0, 0, 0, .08); }
+.card-item:focus-within { outline: 3px solid var(--info); outline-offset: 2px; }
+.card-title a { color: inherit; text-decoration: none; }
+.card-title a:focus-visible { outline: 0; }
+.card-title a:hover { color: var(--green); }
+
+/* Lists used as grids: remove bullets and spacing, let the card fill the cell */
+.card-grid, .career-grid, .gallery-grid, .quick-links, .filter-bar { list-style: none; margin: 0; padding: 0; }
+.card-grid > li > .card-item,
+.career-grid > li > .card-item,
+.gallery-grid > li > .card-item { height: 100%; }
+
+.site-footer address { margin: 0; }
+.card-title { margin: 12px 0 8px; font-size: var(--fs-sh1); font-weight: 700; }
+.card-text { margin: 0 0 16px; color: var(--text-muted); }
+.card-link { margin-top: auto; color: var(--green); font-weight: 700; }
+.card-link::after { content: " →"; }
+
+/* Card meta row (tag + date) */
+.card-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; font-size: var(--fs-sd); color: var(--text-muted); }
+
+/* Tag / badge */
+.tag {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  font-size: var(--fs-xsd);
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.tag-gold  { background: var(--gold-light); border-color: var(--gold-light); color: var(--green-dark); }
+.tag-info  { background: var(--info-bg); border-color: var(--info-bg); color: var(--info); }
+.tag-warn  { background: var(--warning-bg); border-color: var(--warning-bg); color: var(--warning); }
+.tag-ok    { background: var(--success-bg); border-color: var(--success-bg); color: var(--success); }
+
+/* Photo placeholder: replace with <img> when the real photo arrives */
+.photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;          /* keeps the ratio even when <img> has a height attribute */
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--green-soft), #f1f6f4);
+  object-fit: cover;
+}
+.photo-4x3 { aspect-ratio: 4 / 3; }
+.photo-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: var(--fs-sd);
+}
+.photo-empty::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  background: url("../img/icons/image.svg") center / contain no-repeat;
+}
+.photo-credit { margin: 8px 0 0; font-size: var(--fs-xsd); color: var(--text-muted); }
+
+/* Form fields */
+.field { margin-bottom: 16px; }
+.field label { display: block; margin-bottom: 4px; font-weight: 700; font-size: var(--fs-sd); }
+.field-control {
+  width: 100%;
+  min-height: var(--field-height);
+  padding: 8px 12px;
+  background: var(--white);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  font: inherit;
+  color: var(--text);
+}
+textarea.field-control { min-height: 120px; resize: vertical; }
+.field-control:focus-visible { outline: 3px solid var(--info); outline-offset: 1px; }
+.field-hint { margin: 4px 0 0; font-size: var(--fs-xsd); color: var(--text-muted); }
+.field-error { margin: 4px 0 0; font-size: var(--fs-sd); font-weight: 600; color: var(--error); }
+.field.invalid .field-control { border-color: var(--error); background: var(--error-bg); }
+
+/* Page title and lead */
+.page-title { margin: 0; font-size: var(--fs-h1); font-weight: 700; }
+.page-lead  { margin: 8px 0 0; color: var(--text-muted); font-size: var(--fs-sh1); }
+
+/* Password field with its "Mostrar" button */
+.password-field { display: flex; align-items: center; gap: 12px; }
+.password-field .field-control { flex: 1; }
+.password-toggle {
+  min-height: var(--field-height);
+  padding: 0 4px;
+  border: 0;
+  background: none;
+  color: var(--green-dark);
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.password-toggle:focus-visible { outline: 3px solid var(--info); outline-offset: 2px; border-radius: 4px; }
+
+/* Full-width button with a lock icon */
+.btn-block { width: 100%; }
+.btn-lock::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  background: url("../img/icons/lock-white.svg") center / contain no-repeat;
+}

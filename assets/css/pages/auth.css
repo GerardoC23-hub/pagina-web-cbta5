@@ -1,0 +1,16 @@
+/* auth.css · student login (acceso.php) */
+
+.auth-page   { padding-block: 40px 64px; }
+.auth-header { max-width: 480px; margin: 0 auto 24px; text-align: center; }
+
+.auth-card {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.auth-note { margin: 16px 0 0; font-size: var(--fs-sd); color: var(--text-muted); }
+
+@media (min-width: 700px) { .auth-card { padding: 32px; } }

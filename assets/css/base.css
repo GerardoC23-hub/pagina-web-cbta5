@@ -1,0 +1,59 @@
+:root {
+  /* Palette: Gobierno de México 2024-2030 */
+  --green: #1E5B4F;          /* botones primarios, enlaces de acción, acentos */
+  --green-hover: #002F2A;    /* hover del botón primario */
+  --green-dark: #002F2A;      /* header, footer, menú lateral */
+  --green-soft: #E4EEEB;    /* presionado, opción activa */
+  --burgundy: #9B2247;
+  --burgundy-dark: #611232;
+  --gold: #A57F2C;         /* línea superior del footer */
+  --gold-light: #E6D194;   /* línea del header, botón "Acceso alumnos" */
+  --gray: #98989A;
+
+  /* Fondos y bordes */
+  --bg: #F9F9F9;
+  --card: #FFFFFF;
+  --bg-alt: #F3F3F3;
+  --border: #DDDDDD;
+  --border-strong: #767676;
+
+  /* Texto */
+  --text: #161A1D;
+  --text-muted: #555B61;
+  --text-disabled: #AAAAAA;
+  --white: #FFFFFF;
+
+  /* Estados */
+  --success: #086308;   --success-bg: #F0FAF5;
+  --error: #9B0F15;   --error-bg: #FAE5E5;
+  --info: #224497;    --info-bg: #EDF2FE;
+  --warning: #684700;  --warning-bg: #FFEB99;
+
+  /* Superposición de ventanas */
+  --overlay: rgba(22, 26, 29, .56);
+
+  /* Tipografía */
+  --font: "Noto Sans", Arial, sans-serif;
+  --fs-xsd: .75rem;  --fs-sd: .875rem;  --fs-b1: 1rem;
+  --fs-sh1: 1.25rem; --fs-sh0: 1.5rem;
+  --fs-h2: 2rem;     --fs-h1: 2.5rem;   --fs-h0: 3.5rem;
+
+  /* Forma y layout */
+  --radius: 8px;
+  --field-height: 48px;
+  --max-width: 1440px;
+  --side-margin: 16px;   /* margen a los costados: 16 móvil, 24 tablet, 40 escritorio */
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+}
+
+.container {
+  max-width: var(--max-width);
+  padding-inline: var(--side-margin);
+}
+@media (min-width: 640px)  { :root { --side-margin: 24px; } }
+@media (min-width: 1024px) { :root { --side-margin: 40px; } }

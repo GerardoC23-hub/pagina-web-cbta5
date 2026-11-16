@@ -1,0 +1,28 @@
+/* layout.css · sections (the grid and container come from Bootstrap: .container, .row, .col-*) */
+
+.section {
+  padding-block: 32px;
+}
+.section-alt {
+  background: var(--bg-alt);
+}
+.section-dark {
+  background: var(--green-dark);
+  color: var(--white);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 700px) {
+  .section { padding-block: 48px; }
+}
+@media (min-width: 1024px) {
+  .section { padding-block: 64px; }
+}
