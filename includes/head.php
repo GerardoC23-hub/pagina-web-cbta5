@@ -22,11 +22,9 @@ $noindex     = $noindex ?? false;
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?= $base ?>assets/css/base.css">
-  <link rel="stylesheet" href="<?= $base ?>assets/css/layout.css">
   <link rel="stylesheet" href="<?= $base ?>assets/css/components.css">
 <?php if ($withSite): ?>
   <link rel="stylesheet" href="<?= $base ?>assets/css/header.css">
-  <link rel="stylesheet" href="<?= $base ?>assets/css/footer.css">
 <?php endif; ?>
 <?php foreach ($styles as $style): ?>
   <link rel="stylesheet" href="<?= $base ?>assets/css/<?= $style ?>">

@@ -1,59 +1,49 @@
+/* base.css · Gobierno de México palette applied to Bootstrap. Everything else uses Bootstrap classes. */
 :root {
-  /* Palette: Gobierno de México 2024-2030 */
-  --green: #1E5B4F;          /* botones primarios, enlaces de acción, acentos */
-  --green-hover: #002F2A;    /* hover del botón primario */
-  --green-dark: #002F2A;      /* header, footer, menú lateral */
-  --green-soft: #E4EEEB;    /* presionado, opción activa */
-  --burgundy: #9B2247;
-  --burgundy-dark: #611232;
-  --gold: #A57F2C;         /* línea superior del footer */
-  --gold-light: #E6D194;   /* línea del header, botón "Acceso alumnos" */
-  --gray: #98989A;
+  --green: #1e5b4f;  --green-dark: #002f2a;  --green-soft: #e4eeeb;
+  --burgundy: #9b2247;  --gold: #a57f2c;  --gold-light: #e6d194;
+  --info: #224497;   /* focus outline */
 
-  /* Fondos y bordes */
-  --bg: #F9F9F9;
-  --card: #FFFFFF;
-  --bg-alt: #F3F3F3;
-  --border: #DDDDDD;
-  --border-strong: #767676;
+  --bs-body-font-family: "Noto Sans", Arial, sans-serif;
+  --bs-body-color: #161a1d;  --bs-body-bg: #f9f9f9;
+  --bs-secondary-color: #555b61;  --bs-tertiary-bg: #f3f3f3;  --bs-tertiary-bg-rgb: 243, 243, 243;
+  --bs-border-color: #ddd;  --bs-border-radius: .5rem;
+  --bs-primary: #1e5b4f;  --bs-primary-rgb: 30, 91, 79;
+  --bs-success: #1e5b4f;  --bs-success-rgb: 30, 91, 79;
+  --bs-danger: #9b2247;   --bs-danger-rgb: 155, 34, 71;
+  --bs-warning: #a57f2c;  --bs-warning-rgb: 165, 127, 44;
+  --bs-link-color: #1e5b4f;  --bs-link-color-rgb: 30, 91, 79;  --bs-link-hover-color: #002f2a;  --bs-link-hover-color-rgb: 0, 47, 42;
+  --bs-form-invalid-color: #9b0f15;  --bs-form-invalid-border-color: #9b0f15;
 
-  /* Texto */
-  --text: #161A1D;
-  --text-muted: #555B61;
-  --text-disabled: #AAAAAA;
-  --white: #FFFFFF;
-
-  /* Estados */
-  --success: #086308;   --success-bg: #F0FAF5;
-  --error: #9B0F15;   --error-bg: #FAE5E5;
-  --info: #224497;    --info-bg: #EDF2FE;
-  --warning: #684700;  --warning-bg: #FFEB99;
-
-  /* Superposición de ventanas */
-  --overlay: rgba(22, 26, 29, .56);
-
-  /* Tipografía */
-  --font: "Noto Sans", Arial, sans-serif;
-  --fs-xsd: .75rem;  --fs-sd: .875rem;  --fs-b1: 1rem;
-  --fs-sh1: 1.25rem; --fs-sh0: 1.5rem;
-  --fs-h2: 2rem;     --fs-h1: 2.5rem;   --fs-h0: 3.5rem;
-
-  /* Forma y layout */
-  --radius: 8px;
-  --field-height: 48px;
-  --max-width: 1440px;
-  --side-margin: 16px;   /* margen a los costados: 16 móvil, 24 tablet, 40 escritorio */
+  /* Badge and alert colors (Bootstrap "subtle" variants) */
+  --bs-info-bg-subtle: #edf2fe;     --bs-info-text-emphasis: #224497;     --bs-info-border-subtle: #edf2fe;
+  --bs-warning-bg-subtle: #ffeb99;  --bs-warning-text-emphasis: #684700;  --bs-warning-border-subtle: #ffeb99;
+  --bs-success-bg-subtle: #e4eeeb;  --bs-success-text-emphasis: #086308;  --bs-success-border-subtle: #e4eeeb;
+  --bs-danger-bg-subtle: #fae5e5;   --bs-danger-text-emphasis: #9b0f15;   --bs-danger-border-subtle: #9b0f15;
 }
 
-body {
-  font-family: var(--font);
-  color: var(--text);
-  background: var(--bg);
-}
+/* Page width and side margins (16 / 24 / 40 px) */
+.container { max-width: 1440px; --bs-gutter-x: 2rem; }
+@media (min-width: 640px)  { .container { --bs-gutter-x: 3rem; } }
+@media (min-width: 1024px) { .container { --bs-gutter-x: 5rem; } }
 
-.container {
-  max-width: var(--max-width);
-  padding-inline: var(--side-margin);
-}
-@media (min-width: 640px)  { :root { --side-margin: 24px; } }
-@media (min-width: 1024px) { :root { --side-margin: 40px; } }
+/* Headings and buttons */
+h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+h1, .h1 { font-size: 2rem; }  h2 { font-size: 2rem; }  h3 { font-size: 1.5rem; }
+@media (min-width: 900px) { h1, .h1 { font-size: 2.5rem; } }
+
+.btn { --bs-btn-padding-x: 1.5rem; --bs-btn-padding-y: .625rem; --bs-btn-border-width: 2px; --bs-btn-font-weight: 700; --bs-btn-border-radius: .5rem; }
+.btn-primary { --bs-btn-bg: #1e5b4f; --bs-btn-border-color: #1e5b4f; --bs-btn-hover-bg: #002f2a; --bs-btn-hover-border-color: #002f2a; --bs-btn-active-bg: #002f2a; --bs-btn-active-border-color: #002f2a; }
+.btn-outline-primary { --bs-btn-color: #1e5b4f; --bs-btn-border-color: #1e5b4f; --bs-btn-hover-color: #002f2a; --bs-btn-hover-bg: #e4eeeb; --bs-btn-hover-border-color: #1e5b4f; --bs-btn-active-bg: #1e5b4f; --bs-btn-active-border-color: #1e5b4f; --bs-btn-disabled-color: #1e5b4f; --bs-btn-disabled-border-color: #1e5b4f; --bs-btn-focus-shadow-rgb: 30, 91, 79; }
+.btn-gold { --bs-btn-color: #002f2a; --bs-btn-bg: #e6d194; --bs-btn-border-color: #e6d194; --bs-btn-hover-color: #002f2a; --bs-btn-hover-bg: #f0e2b4; --bs-btn-hover-border-color: #f0e2b4; --bs-btn-active-color: #002f2a; --bs-btn-active-bg: #f0e2b4; --bs-btn-active-border-color: #f0e2b4; }
+
+/* Forms and focus */
+.form-control { min-height: 48px; border-color: #767676; }
+.form-label { font-size: .875rem; font-weight: 700; }
+:focus-visible { outline: 3px solid var(--info); outline-offset: 2px; }
+
+/* Brand helpers (colors Bootstrap does not have) */
+.bg-brand { background: #002f2a !important; }
+.bg-gold { background: #e6d194 !important; color: #002f2a; }
+.text-gold { color: #e6d194; }
+.border-gold { border-color: #e6d194 !important; }

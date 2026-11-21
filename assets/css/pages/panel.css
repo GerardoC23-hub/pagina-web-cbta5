@@ -1,0 +1,8 @@
+/* panel.css · only what Bootstrap does not cover: side menu and login background */
+.panel-sidebar { --bs-offcanvas-width: 296px; }
+@media (min-width: 992px) { .panel-sidebar { width: 296px !important; } }
+.panel-sidebar .nav-link { color: rgba(255, 255, 255, .88); }
+.panel-sidebar .nav-link:hover { background: rgba(255, 255, 255, .08); }
+.panel-sidebar .nav-link.active { background: rgba(230, 209, 148, .18); box-shadow: inset 3px 0 0 #e6d194; font-weight: 700; }
+.panel-login { background: linear-gradient(180deg, #e4eeeb, #fff 60%); }
+.panel-card { max-width: 440px; border-top: 4px solid var(--gold); }
