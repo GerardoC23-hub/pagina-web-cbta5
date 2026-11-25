@@ -1,0 +1,6 @@
+/* faq.css · only what Bootstrap does not cover: accordion colors from the project palette */
+.accordion {
+  --bs-accordion-active-bg: var(--green-soft);
+  --bs-accordion-active-color: var(--green-dark);
+  --bs-accordion-btn-focus-box-shadow: none;
+}

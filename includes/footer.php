@@ -43,6 +43,13 @@ $contact = siteContact();
       </div>
 
     </div>
+    <nav class="d-flex flex-wrap justify-content-center gap-3 gap-md-4 mt-4 small" aria-label="Enlaces informativos">
+      <a class="link-light fw-semibold" href="<?= $base ?>preguntas-frecuentes.php">Preguntas frecuentes</a>
+      <a class="link-light fw-semibold" href="<?= $base ?>privacidad.php">Aviso de privacidad</a>
+      <a class="link-light fw-semibold" href="<?= $base ?>terminos.php">Términos y condiciones</a>
+      <a class="link-light fw-semibold" href="<?= $base ?>accesibilidad.php">Accesibilidad</a>
+      <a class="link-light fw-semibold" href="<?= $base ?>mapa-del-sitio.php">Mapa del sitio</a>
+    </nav>
     <p class="border-top border-light border-opacity-25 mt-4 mb-0 py-3 text-center small">© 2026 CBTa No. 5 · Huejutla de Reyes, Hidalgo, México. Todos los derechos reservados.</p>
   </div>
 </footer>

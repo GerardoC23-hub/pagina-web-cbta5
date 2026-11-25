@@ -1,0 +1,5 @@
+/* about.css · only what Bootstrap does not cover: colored lines on the mission, vision and value cards, and the timeline dot */
+.mission-card { border-top: 4px solid var(--green); }
+.vision-card  { border-top: 4px solid var(--burgundy); }
+.value-item   { border-left: 4px solid var(--gold); }
+.timeline-dot { margin-left: -1.5px; }
