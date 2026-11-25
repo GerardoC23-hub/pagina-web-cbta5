@@ -6,3 +6,5 @@
 .panel-sidebar .nav-link.active { background: rgba(230, 209, 148, .18); box-shadow: inset 3px 0 0 #e6d194; font-weight: 700; }
 .panel-login { background: linear-gradient(180deg, #e4eeeb, #fff 60%); }
 .panel-card { max-width: 440px; border-top: 4px solid var(--gold); }
+/* Eliminar: rojo de la guía de estilos */
+.btn-danger { --bs-btn-bg: #9b0f15; --bs-btn-border-color: #9b0f15; --bs-btn-hover-bg: #7a0c11; --bs-btn-hover-border-color: #7a0c11; --bs-btn-active-bg: #7a0c11; --bs-btn-active-border-color: #7a0c11; }

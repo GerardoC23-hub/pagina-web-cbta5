@@ -2,3 +2,18 @@
 .idea/
 .DS_Store
 Thumbs.db
+
+# Uploaded files (only the folders are tracked)
+uploads/**/*.*
+storage/**/*.*
+!uploads/**/.gitkeep
+!uploads/.htaccess
+!uploads/README.md
+!storage/**/.gitkeep
+!storage/.htaccess
+
+# Credenciales de la base de datos (cada quien copia config/conexion.example.php)
+config/conexion.php
+
+# Cuenta de correo para recuperar contraseñas (cada quien copia config/correo.example.php)
+config/correo.php

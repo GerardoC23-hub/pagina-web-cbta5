@@ -1,0 +1,3 @@
+# Private files (alumnos-only documents, request attachments).
+# Nobody opens these by URL: a PHP script checks the session and sends the file.
+Require all denied

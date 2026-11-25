@@ -32,36 +32,38 @@ $base   = $base ?? '';
           <li class="nav-item dropdown">
             <a class="nav-link text-white fw-semibold py-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Nosotros</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>nosotros.php">Misión, visión e historia</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>personal.php">Personal y directorio</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/nosotros.php">Misión, visión e historia</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/personal.php">Personal y directorio</a></li>
             </ul>
           </li>
 
-          <li class="nav-item"><a class="nav-link text-white fw-semibold py-3<?= $pagina === 'nuevo-ingreso' ? ' active' : '' ?>"<?= $pagina === 'nuevo-ingreso' ? ' aria-current="page"' : '' ?> href="<?= $base ?>nuevo-ingreso.php">Nuevo ingreso</a></li>
-          <li class="nav-item"><a class="nav-link text-white fw-semibold py-3<?= $pagina === 'documentos' ? ' active' : '' ?>"<?= $pagina === 'documentos' ? ' aria-current="page"' : '' ?> href="<?= $base ?>documentos.php">Documentos</a></li>
+          <li class="nav-item"><a class="nav-link text-white fw-semibold py-3<?= $pagina === 'nuevo-ingreso' ? ' active' : '' ?>"<?= $pagina === 'nuevo-ingreso' ? ' aria-current="page"' : '' ?> href="<?= $base ?>pages/nuevo-ingreso.php">Nuevo ingreso</a></li>
+          <li class="nav-item"><a class="nav-link text-white fw-semibold py-3<?= $pagina === 'documentos' ? ' active' : '' ?>"<?= $pagina === 'documentos' ? ' aria-current="page"' : '' ?> href="<?= $base ?>pages/documentos.php">Documentos</a></li>
 
           <li class="nav-item dropdown">
             <a class="nav-link text-white fw-semibold py-3 dropdown-toggle<?= in_array($pagina, ['clubes', 'servicios', 'galeria', 'productos'], true) ? ' active' : '' ?>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Vida estudiantil</a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'clubes' ? ' active' : '' ?>" href="<?= $base ?>clubes.php">Clubes y actividades</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'servicios' ? ' active' : '' ?>" href="<?= $base ?>servicios.php">Servicios</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'galeria' ? ' active' : '' ?>"<?= $pagina === 'galeria' ? ' aria-current="page"' : '' ?> href="<?= $base ?>galeria.php">Galería</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'productos' ? ' active' : '' ?>" href="<?= $base ?>productos.php">Productos</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'clubes' ? ' active' : '' ?>" href="<?= $base ?>pages/clubes.php">Clubes y actividades</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'servicios' ? ' active' : '' ?>" href="<?= $base ?>pages/servicios.php">Servicios</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'galeria' ? ' active' : '' ?>"<?= $pagina === 'galeria' ? ' aria-current="page"' : '' ?> href="<?= $base ?>pages/galeria.php">Galería</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3<?= $pagina === 'productos' ? ' active' : '' ?>" href="<?= $base ?>pages/productos.php">Productos</a></li>
             </ul>
           </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link text-white fw-semibold py-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Más</a>
             <ul class="dropdown-menu dropdown-menu-xl-end">
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>noticias.php">Noticias y avisos</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>materiales.php">Materiales educativos</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>solicitudes.php">Solicitudes en línea</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>enlaces.php">Enlaces de interés</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/noticias.php">Noticias y avisos</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/materiales.php">Materiales educativos</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/solicitudes.php">Solicitudes en línea</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/enlaces.php">Enlaces de interés</a></li>
             </ul>
           </li>
 
+          <li class="nav-item"><a class="nav-link text-white fw-semibold py-3<?= $pagina === 'contacto' ? ' active' : '' ?>"<?= $pagina === 'contacto' ? ' aria-current="page"' : '' ?> href="<?= $base ?>pages/contacto.php">Contacto</a></li>
+
           <li class="nav-item d-grid d-xl-block ms-xl-2 mt-3 mt-xl-0">
-            <a class="btn btn-gold" href="<?= $base ?>acceso.php">Acceso alumnos</a>
+            <a class="btn btn-gold" href="<?= $base ?>pages/acceso.php">Acceso alumnos</a>
           </li>
 
         </ul>

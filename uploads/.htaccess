@@ -1,0 +1,5 @@
+# Public files: images, videos and open documents. Never run scripts from here.
+Options -Indexes
+<FilesMatch "\.(php|phtml|phar|html?|js)$">
+  Require all denied
+</FilesMatch>

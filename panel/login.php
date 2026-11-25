@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/../includes/panel-auth.php';
+require_once __DIR__ . '/../config/conexion.php';
 
 // Already signed in: go straight to the panel
 if (!empty($_SESSION['panel_user'])) {
@@ -7,7 +8,10 @@ if (!empty($_SESSION['panel_user'])) {
     exit;
 }
 
-$users         = require __DIR__ . '/../includes/panel-users.php';
+// One-time message (for example after changing the password)
+$notice = $_SESSION['panel_notice'] ?? '';
+unset($_SESSION['panel_notice']);
+
 $usernameError = '';
 $passwordError = '';
 $formError     = '';
@@ -17,29 +21,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    if (($_SESSION['panel_locked_until'] ?? 0) > time()) {
-        $formError = 'Acceso bloqueado por 15 minutos. Intenta más tarde.';
-    } else {
-        if ($username === '') { $usernameError = 'Escribe tu usuario.'; }
-        if ($password === '') { $passwordError = 'Escribe tu contraseña.'; }
+    if ($username === '') { $usernameError = 'Escribe tu usuario.'; }
+    if ($password === '') { $passwordError = 'Escribe tu contraseña.'; }
 
-        if ($usernameError === '' && $passwordError === '') {
-            if (isset($users[$username]) && hash_equals($users[$username]['password'], $password)) {
-                session_regenerate_id(true);
-                $_SESSION['panel_user'] = ['username' => $username, 'name' => $users[$username]['name'], 'role' => $users[$username]['role']];
-                $_SESSION['panel_last_seen'] = time();
-                $_SESSION['panel_attempts'] = 0;
-                header('Location: index.php');
-                exit;
-            }
-            $_SESSION['panel_attempts'] = ($_SESSION['panel_attempts'] ?? 0) + 1;
-            if ($_SESSION['panel_attempts'] >= 5) {
-                $_SESSION['panel_locked_until'] = time() + 900;
-                $_SESSION['panel_attempts'] = 0;
-                $formError = 'Acceso bloqueado por 15 minutos.';
+    if ($usernameError === '' && $passwordError === '') {
+
+        // Only users listed in tblweb_panel_usuarios can enter the panel
+        $sql = "SELECT u.id_usuario, u.nombre_usuario, u.password, u.perfil,
+                       t.nombre, t.a_paterno,
+                       p.estado, p.cambiar_contrasena, p.intentos_fallidos, p.bloqueado_hasta
+                FROM tblusuarios u
+                JOIN tblweb_panel_usuarios p ON p.id_usuario = u.id_usuario
+                JOIN tbltrabajador t ON t.id_trabajador = u.id_trabajador
+                WHERE u.nombre_usuario = ?";
+        $stmt = mysqli_prepare($conexion, $sql);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+        mysqli_stmt_close($stmt);
+
+        if (!$user) {
+            $formError = 'Usuario o contraseña incorrectos.';
+
+        } elseif ($user['bloqueado_hasta'] !== null && strtotime($user['bloqueado_hasta']) > time()) {
+            $formError = 'Acceso bloqueado 15 minutos.';
+
+        } elseif (!hash_equals($user['password'], md5($password))) {
+            // Wrong password: count the attempt, lock the account after 5
+            $attempts = $user['intentos_fallidos'] + 1;
+            if ($attempts >= 5) {
+                $sql = "UPDATE tblweb_panel_usuarios
+                        SET intentos_fallidos = 0, bloqueado_hasta = DATE_ADD(NOW(), INTERVAL 15 MINUTE)
+                        WHERE id_usuario = ?";
+                $formError = 'Acceso bloqueado 15 minutos.';
             } else {
+                $sql = "UPDATE tblweb_panel_usuarios SET intentos_fallidos = intentos_fallidos + 1 WHERE id_usuario = ?";
                 $formError = 'Usuario o contraseña incorrectos.';
             }
+            $stmt = mysqli_prepare($conexion, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $user['id_usuario']);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+
+        } elseif ($user['estado'] !== 'Activo' || !in_array($user['perfil'], ['administrador', 'editor'], true)) {
+            $formError = 'Sin acceso al panel. Contacta al administrador.';
+
+        } else {
+            // Correct: reset the counter and save the last access
+            $sql = "UPDATE tblweb_panel_usuarios SET intentos_fallidos = 0, bloqueado_hasta = NULL WHERE id_usuario = ?";
+            $stmt = mysqli_prepare($conexion, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $user['id_usuario']);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+
+            $sql = "UPDATE tblusuarios SET ultimo_acceso = NOW() WHERE id_usuario = ?";
+            $stmt = mysqli_prepare($conexion, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $user['id_usuario']);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+
+            session_regenerate_id(true);
+            $_SESSION['panel_user'] = [
+                'id'       => (int) $user['id_usuario'],
+                'username' => $user['nombre_usuario'],
+                'name'     => $user['nombre'] . ' ' . $user['a_paterno'],
+                'role'     => $user['perfil'] === 'administrador' ? 'Administrador' : 'Editor',
+            ];
+            $_SESSION['panel_last_seen']      = time();
+            $_SESSION['panel_must_change_pw'] = (int) $user['cambiar_contrasena'];
+            header('Location: index.php');
+            exit;
         }
     }
 }
@@ -66,6 +117,10 @@ require __DIR__ . '/../includes/head.php';
 
     <h1 class="h3 fw-bold mb-1" id="panel-login-title">Iniciar sesión</h1>
     <p class="text-body-secondary mb-3">Escribe tu usuario y contraseña.</p>
+
+    <?php if ($notice !== ''): ?>
+    <div class="alert alert-success" role="alert"><?= htmlspecialchars($notice, ENT_QUOTES, 'UTF-8') ?></div>
+    <?php endif; ?>
 
     <?php if ($formError !== ''): ?>
     <div class="alert alert-danger" role="alert"><?= htmlspecialchars($formError, ENT_QUOTES, 'UTF-8') ?></div>

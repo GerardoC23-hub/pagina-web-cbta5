@@ -1,4 +1,8 @@
-<?php $base = $base ?? ''; ?>
+<?php
+$base = $base ?? '';
+require_once __DIR__ . '/site-data.php';
+$contact = siteContact();
+?>
 <footer class="bg-brand text-white border-top border-4 border-gold mt-5 pt-4">
   <div class="container">
     <div class="row gy-4 align-items-center text-center text-md-start">
@@ -19,11 +23,21 @@
         <h2 class="h5 mb-3">Contacto</h2>
         <address class="mb-0">
         <ul class="list-unstyled d-inline-block d-md-block text-start mb-0">
-          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/location.svg" width="22" height="22" alt=""><span>Boulevard Adolfo López Mateos S/N, Col. Aviación Civil, C.P. 43000, Huejutla de Reyes, Hidalgo</span></li>
-          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/phone.svg" width="22" height="22" alt=""><a class="link-light fw-semibold" href="tel:7898960065">789 896 0065</a></li>
-          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/email.svg" width="22" height="22" alt=""><a class="link-light fw-semibold text-break" href="mailto:hgo.cbta005.direccion@dgetaycm.sems.gob.mx">hgo.cbta005.direccion@dgetaycm.sems.gob.mx</a></li>
-          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/hours.svg" width="22" height="22" alt=""><span>Lunes a viernes, 8:00 a 14:00 h (Hora de atención)</span></li>
-          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/link.svg" width="22" height="22" alt=""><a class="link-light fw-semibold text-break" href="https://x.com/CBTA5HUEJUTLA" target="_blank" rel="noopener">X (Twitter): @CBTA5HUEJUTLA<span class="visually-hidden"> (se abre en una pestaña nueva)</span></a></li>
+<?php if ($contact['address']['text'] !== ''): ?>
+          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/location.svg" width="22" height="22" alt=""><span><?= h($contact['address']['text']) ?></span></li>
+<?php endif; ?>
+<?php if ($contact['phone'] !== ''): ?>
+          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/phone.svg" width="22" height="22" alt=""><a class="link-light fw-semibold" href="tel:<?= h(preg_replace('/\D/', '', $contact['phone'])) ?>"><?= h($contact['phone']) ?></a></li>
+<?php endif; ?>
+<?php if ($contact['email'] !== ''): ?>
+          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/email.svg" width="22" height="22" alt=""><a class="link-light fw-semibold text-break" href="mailto:<?= h($contact['email']) ?>"><?= h($contact['email']) ?></a></li>
+<?php endif; ?>
+<?php if ($contact['hours'] !== ''): ?>
+          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/hours.svg" width="22" height="22" alt=""><span><?= h($contact['hours']) ?> (Hora de atención)</span></li>
+<?php endif; ?>
+<?php foreach ($contact['social'] as $network): ?>
+          <li class="d-flex gap-3 mb-2"><img class="flex-shrink-0" src="<?= $base ?>assets/img/icons/link.svg" width="22" height="22" alt=""><a class="link-light fw-semibold text-break" href="<?= h($network['url']) ?>" target="_blank" rel="noopener"><?= h($network['name']) ?><?= $network['user'] !== '' ? ': ' . h($network['user']) : '' ?><span class="visually-hidden"> (se abre en una pestaña nueva)</span></a></li>
+<?php endforeach; ?>
         </ul>
         </address>
       </div>
