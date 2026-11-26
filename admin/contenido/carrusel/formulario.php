@@ -37,20 +37,22 @@ require __DIR__ . '/../../../includes/panel-layout-start.php';
 
               <div class="col-md-4">
                 <label class="form-label" for="etiqueta">Etiqueta</label>
-                <input class="form-control" id="etiqueta" name="etiqueta" type="text" maxlength="60" value="<?= e($slide['etiqueta']) ?>">
+                <input class="form-control<?= isset($errors['etiqueta']) ? ' is-invalid' : '' ?>" id="etiqueta" name="etiqueta" type="text" <?= textRules('la etiqueta', 3, 60, false, true) ?> value="<?= e($slide['etiqueta']) ?>">
                 <div class="form-text">Texto corto arriba del título, por ejemplo «Nuevo ingreso».</div>
+                <div class="invalid-feedback"><?= e($errors['etiqueta'] ?? '') ?></div>
               </div>
 
               <div class="col-md-8">
                 <label class="form-label" for="titulo">Título *</label>
-                <input class="form-control<?= isset($errors['titulo']) ? ' is-invalid' : '' ?>" id="titulo" name="titulo" type="text" minlength="3" maxlength="150" value="<?= e($slide['titulo']) ?>" required>
+                <input class="form-control<?= isset($errors['titulo']) ? ' is-invalid' : '' ?>" id="titulo" name="titulo" type="text" <?= textRules('el título', 3, 150) ?> value="<?= e($slide['titulo']) ?>">
                 <div class="invalid-feedback"><?= e($errors['titulo'] ?? 'Título: de 3 a 150 caracteres.') ?></div>
               </div>
 
               <div class="col-12">
                 <label class="form-label" for="descripcion">Descripción</label>
-                <input class="form-control" id="descripcion" name="descripcion" type="text" maxlength="255" value="<?= e($slide['descripcion']) ?>">
+                <input class="form-control<?= isset($errors['descripcion']) ? ' is-invalid' : '' ?>" id="descripcion" name="descripcion" type="text" <?= textRules('la descripción', 3, 255, false, true) ?> value="<?= e($slide['descripcion']) ?>">
                 <div class="form-text">Una frase corta. Máximo 255 caracteres.</div>
+                <div class="invalid-feedback"><?= e($errors['descripcion'] ?? '') ?></div>
               </div>
 
             </div>
@@ -67,21 +69,21 @@ require __DIR__ . '/../../../includes/panel-layout-start.php';
 <?php if ($isEditing && $slide['imagen']): ?>
                 <img class="d-block rounded mb-2" src="<?= e(siteFile($slide['imagen'], $base)) ?>" width="192" height="108" alt="Imagen actual del slide">
 <?php endif; ?>
-                <input class="form-control<?= isset($errors['imagen']) ? ' is-invalid' : '' ?>" id="imagen" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" data-max-mb="1"<?= $isEditing ? '' : ' required' ?>>
+                <input class="form-control<?= isset($errors['imagen']) ? ' is-invalid' : '' ?>" id="imagen" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" data-max-mb="1" data-msg-required="Selecciona una imagen." data-msg-type="La imagen debe ser JPG, PNG o WebP."<?= $isEditing ? '' : ' required' ?>>
                 <div class="form-text">Formatos: JPG, PNG o WebP. Máximo 1 MB.<?= $isEditing ? ' Déjala vacía para conservar la actual.' : '' ?></div>
                 <div class="invalid-feedback"><?= e($errors['imagen'] ?? 'Selecciona una imagen.') ?></div>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label" for="imagen_alt">Descripción de la imagen (texto alternativo) *</label>
-                <input class="form-control<?= isset($errors['imagen_alt']) ? ' is-invalid' : '' ?>" id="imagen_alt" name="imagen_alt" type="text" minlength="8" maxlength="150" value="<?= e($slide['imagen_alt']) ?>" required>
+                <input class="form-control<?= isset($errors['imagen_alt']) ? ' is-invalid' : '' ?>" id="imagen_alt" name="imagen_alt" type="text" <?= textRules('el texto alternativo', 8, 150) ?> value="<?= e($slide['imagen_alt']) ?>">
                 <div class="form-text">Describe qué se ve, para personas que usan lector de pantalla.</div>
                 <div class="invalid-feedback"><?= e($errors['imagen_alt'] ?? 'Describe la imagen (mínimo 8 caracteres).') ?></div>
               </div>
 
               <div class="col-md-6">
                 <label class="form-label" for="imagen_credito">Crédito *</label>
-                <input class="form-control<?= isset($errors['imagen_credito']) ? ' is-invalid' : '' ?>" id="imagen_credito" name="imagen_credito" type="text" maxlength="120" value="<?= e($slide['imagen_credito']) ?>" required>
+                <input class="form-control<?= isset($errors['imagen_credito']) ? ' is-invalid' : '' ?>" id="imagen_credito" name="imagen_credito" type="text" <?= textRules('el crédito', 3, 120) ?> value="<?= e($slide['imagen_credito']) ?>">
                 <div class="form-text">Quién tomó la foto.</div>
                 <div class="invalid-feedback"><?= e($errors['imagen_credito'] ?? 'Escribe el autor de la foto.') ?></div>
               </div>
@@ -97,8 +99,9 @@ require __DIR__ . '/../../../includes/panel-layout-start.php';
 
               <div class="col-md-4">
                 <label class="form-label" for="fecha_inicio">Mostrar desde</label>
-                <input class="form-control" id="fecha_inicio" name="fecha_inicio" type="date" value="<?= e($slide['fecha_inicio']) ?>">
+                <input class="form-control<?= isset($errors['fecha_inicio']) ? ' is-invalid' : '' ?>" id="fecha_inicio" name="fecha_inicio" type="date" value="<?= e($slide['fecha_inicio']) ?>">
                 <div class="form-text">Opcional.</div>
+                <div class="invalid-feedback"><?= e($errors['fecha_inicio'] ?? '') ?></div>
               </div>
 
               <div class="col-md-4">
@@ -110,8 +113,9 @@ require __DIR__ . '/../../../includes/panel-layout-start.php';
 
               <div class="col-md-4">
                 <label class="form-label" for="orden">Orden</label>
-                <input class="form-control" id="orden" name="orden" type="number" min="0" max="999" value="<?= (int) $slide['orden'] ?>">
+                <input class="form-control<?= isset($errors['orden']) ? ' is-invalid' : '' ?>" id="orden" name="orden" type="number" min="0" max="999" value="<?= (int) $slide['orden'] ?>" data-msg-range="El orden es un número de 0 a 999.">
                 <div class="form-text">El número más bajo sale primero.</div>
+                <div class="invalid-feedback"><?= e($errors['orden'] ?? '') ?></div>
               </div>
 
               <div class="col-12">

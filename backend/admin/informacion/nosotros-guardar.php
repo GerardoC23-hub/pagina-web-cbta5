@@ -2,6 +2,7 @@
 // Guarda los textos de Nosotros: recibe el formulario, valida, actualiza la base y regresa a la pantalla.
 
 require __DIR__ . '/../../../includes/panel-auth.php';
+require __DIR__ . '/../../../includes/panel-validation.php';
 require_once __DIR__ . '/../../../config/conexion.php';
 
 panel_require_login();
@@ -23,11 +24,10 @@ $errors = [];
 
 foreach ($limits as $key => [$min, $max]) {
   $texts[$key] = trim($_POST['contenido'][$key] ?? '');
-  $length      = mb_strlen($texts[$key]);
 
   // 2. Validar
-  if ($length < $min || $length > $max) {
-    $errors[$key] = $titles[$key] . ": de $min a $max caracteres.";
+  if (($message = textError($texts[$key], 'el texto de ' . mb_strtolower($titles[$key]), $min, $max)) !== '') {
+    $errors[$key] = $message;
   }
 }
 

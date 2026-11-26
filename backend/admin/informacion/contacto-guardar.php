@@ -2,6 +2,7 @@
 // Guarda los datos de contacto: recibe el formulario, valida, actualiza la base y regresa a la pantalla.
 
 require __DIR__ . '/../../../includes/panel-auth.php';
+require __DIR__ . '/../../../includes/panel-validation.php';
 require_once __DIR__ . '/../../../config/conexion.php';
 
 panel_require_login();
@@ -33,28 +34,28 @@ while ($row = mysqli_fetch_assoc($result)) {
 
 // 2. Validar
 $errors = [];
-$text   = fn (string $key) => mb_strlen($rows[$key]['contenido'] ?? '');
 
-if ($text('contacto_direccion') < 10 || $text('contacto_direccion') > 200) {
-  $errors['contacto_direccion'] = 'Dirección: de 10 a 200 caracteres.';
+$checks = [
+  'contacto_direccion' => ['la dirección', 10, 200],
+  'contacto_horario'   => ['el horario', 5, 100],
+  'contacto_sitio'     => ['el nombre del sitio', 3, 60],
+];
+foreach ($checks as $key => [$label, $min, $max]) {
+  if (($message = textError($rows[$key]['contenido'] ?? '', $label, $min, $max)) !== '') {
+    $errors[$key] = $message;
+  }
 }
-if ($rows['contacto_direccion']['enlace'] !== '' && !isValidUrl($rows['contacto_direccion']['enlace'])) {
-  $errors['contacto_direccion_enlace'] = 'Enlace no válido.';
+if (($rows['contacto_direccion']['enlace'] ?? '') !== '' && !isValidUrl($rows['contacto_direccion']['enlace'])) {
+  $errors['contacto_direccion_enlace'] = 'Escribe un enlace completo que empiece con https://.';
 }
-if (!preg_match('/^[0-9\s()+\-]{8,20}$/', $rows['contacto_telefono']['contenido'])) {
-  $errors['contacto_telefono'] = 'Teléfono no válido.';
+if (!preg_match('/^[0-9\s()+\-]{8,20}$/', $rows['contacto_telefono']['contenido'] ?? '')) {
+  $errors['contacto_telefono'] = ($rows['contacto_telefono']['contenido'] ?? '') === '' ? 'Escribe el teléfono.' : 'El teléfono tiene de 8 a 20 números (puede llevar espacios, + y -).';
 }
-if (!filter_var($rows['contacto_correo']['contenido'], FILTER_VALIDATE_EMAIL)) {
-  $errors['contacto_correo'] = 'Correo no válido.';
+if (!filter_var($rows['contacto_correo']['contenido'] ?? '', FILTER_VALIDATE_EMAIL) || mb_strlen($rows['contacto_correo']['contenido']) > 120) {
+  $errors['contacto_correo'] = ($rows['contacto_correo']['contenido'] ?? '') === '' ? 'Escribe el correo.' : 'Escribe un correo completo, por ejemplo nombre@cbta5.edu.mx.';
 }
-if ($text('contacto_horario') < 5 || $text('contacto_horario') > 100) {
-  $errors['contacto_horario'] = 'Horario: de 5 a 100 caracteres.';
-}
-if ($text('contacto_sitio') < 3 || $text('contacto_sitio') > 60) {
-  $errors['contacto_sitio'] = 'Nombre: de 3 a 60 caracteres.';
-}
-if (!isValidUrl($rows['contacto_sitio']['enlace'])) {
-  $errors['contacto_sitio_enlace'] = 'Enlace no válido.';
+if (!isValidUrl($rows['contacto_sitio']['enlace'] ?? '')) {
+  $errors['contacto_sitio_enlace'] = ($rows['contacto_sitio']['enlace'] ?? '') === '' ? 'Escribe el enlace del sitio.' : 'Escribe un enlace completo que empiece con https://.';
 }
 
 foreach ($rows as $key => $row) {
@@ -62,10 +63,10 @@ foreach ($rows as $key => $row) {
     continue;
   }
   if ($row['enlace'] !== '' && !isValidUrl($row['enlace'])) {
-    $errors[$key . '_enlace'] = 'Enlace no válido.';
+    $errors[$key . '_enlace'] = 'Escribe un enlace completo que empiece con https://.';
   }
   if (mb_strlen($row['contenido']) > 60) {
-    $errors[$key] = 'Máximo 60 caracteres.';
+    $errors[$key] = 'El usuario admite máximo 60 caracteres.';
   }
 }
 

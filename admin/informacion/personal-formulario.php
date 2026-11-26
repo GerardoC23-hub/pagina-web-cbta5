@@ -37,7 +37,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 
               <div class="col-md-8">
                 <label class="form-label" for="nombre">Nombre *</label>
-                <input class="form-control<?= isset($errors['nombre']) ? ' is-invalid' : '' ?>" id="nombre" name="nombre" type="text" minlength="3" maxlength="120" value="<?= e($person['nombre']) ?>" required>
+                <input class="form-control<?= isset($errors['nombre']) ? ' is-invalid' : '' ?>" id="nombre" name="nombre" type="text" minlength="3" maxlength="120" pattern="[\p{L}][\p{L}\s.'’\-]*" data-msg-required="Escribe el nombre." data-msg-min="El nombre debe tener al menos 3 caracteres." data-msg-pattern="El nombre solo lleva letras, espacios, puntos y guiones." value="<?= e($person['nombre']) ?>" required>
                 <div class="invalid-feedback"><?= e($errors['nombre'] ?? 'Nombre: de 3 a 120 caracteres.') ?></div>
               </div>
 
@@ -53,19 +53,19 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 
               <div class="col-12">
                 <label class="form-label" for="cargo">Cargo *</label>
-                <input class="form-control<?= isset($errors['cargo']) ? ' is-invalid' : '' ?>" id="cargo" name="cargo" type="text" minlength="3" maxlength="100" value="<?= e($person['cargo']) ?>" required>
+                <input class="form-control<?= isset($errors['cargo']) ? ' is-invalid' : '' ?>" id="cargo" name="cargo" type="text" <?= textRules('el cargo', 3, 100) ?> value="<?= e($person['cargo']) ?>">
                 <div class="invalid-feedback"><?= e($errors['cargo'] ?? 'Cargo: de 3 a 100 caracteres.') ?></div>
               </div>
 
               <div class="col-md-7">
                 <label class="form-label" for="correo">Correo institucional</label>
-                <input class="form-control<?= isset($errors['correo']) ? ' is-invalid' : '' ?>" id="correo" name="correo" type="email" maxlength="120" value="<?= e($person['correo']) ?>">
+                <input class="form-control<?= isset($errors['correo']) ? ' is-invalid' : '' ?>" id="correo" name="correo" type="email" maxlength="120" data-msg-type="Escribe un correo completo, por ejemplo nombre@cbta5.edu.mx." value="<?= e($person['correo']) ?>">
                 <div class="invalid-feedback"><?= e($errors['correo'] ?? 'Correo no válido.') ?></div>
               </div>
 
               <div class="col-md-5">
                 <label class="form-label" for="telefono">Teléfono</label>
-                <input class="form-control<?= isset($errors['telefono']) ? ' is-invalid' : '' ?>" id="telefono" name="telefono" type="tel" maxlength="20" pattern="[0-9\s\(\)\+\-]{8,20}" value="<?= e($person['telefono']) ?>">
+                <input class="form-control<?= isset($errors['telefono']) ? ' is-invalid' : '' ?>" id="telefono" name="telefono" type="tel" maxlength="20" pattern="[0-9\s\(\)\+\-]{8,20}" data-msg-pattern="El teléfono tiene de 8 a 20 números (puede llevar espacios, + y -)." value="<?= e($person['telefono']) ?>">
                 <div class="invalid-feedback"><?= e($errors['telefono'] ?? 'Teléfono no válido.') ?></div>
               </div>
 
@@ -83,7 +83,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if ($person['foto']): ?>
                 <img class="d-block rounded mb-2 object-fit-cover" src="<?= e($base . $person['foto']) ?>" width="96" height="96" alt="Foto actual">
 <?php endif; ?>
-                <input class="form-control<?= isset($errors['foto']) ? ' is-invalid' : '' ?>" id="foto" name="foto" type="file" accept="image/jpeg,image/png,image/webp" data-max-mb="1">
+                <input class="form-control<?= isset($errors['foto']) ? ' is-invalid' : '' ?>" id="foto" name="foto" type="file" accept="image/jpeg,image/png,image/webp" data-max-mb="1" data-msg-type="La foto debe ser JPG, PNG o WebP.">
                 <div class="form-text">JPG, PNG o WebP. Máximo 1 MB.<?= $person['foto'] ? ' Déjala vacía para conservar la actual.' : '' ?></div>
                 <div class="invalid-feedback"><?= e($errors['foto'] ?? 'Formato no válido (JPG, PNG o WebP).') ?></div>
 <?php if ($person['foto']): ?>
@@ -96,7 +96,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 
               <div class="col-md-6">
                 <label class="form-label" for="foto_credito">Crédito de la foto</label>
-                <input class="form-control<?= isset($errors['foto_credito']) ? ' is-invalid' : '' ?>" id="foto_credito" name="foto_credito" type="text" maxlength="120" value="<?= e($person['foto_credito']) ?>">
+                <input class="form-control<?= isset($errors['foto_credito']) ? ' is-invalid' : '' ?>" id="foto_credito" name="foto_credito" type="text" <?= textRules('el crédito', 3, 120, false, true) ?> value="<?= e($person['foto_credito']) ?>">
                 <div class="form-text">Quién tomó la foto. Obligatorio si hay foto.</div>
                 <div class="invalid-feedback"><?= e($errors['foto_credito'] ?? 'Escribe el autor de la foto.') ?></div>
               </div>

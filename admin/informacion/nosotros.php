@@ -39,7 +39,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if (isset($texts[$key])): ?>
               <div class="col-12">
                 <label class="form-label" for="<?= $key ?>"><?= e($texts[$key]['titulo']) ?> *</label>
-                <textarea class="form-control<?= isset($errors[$key]) ? ' is-invalid' : '' ?>" id="<?= $key ?>" name="contenido[<?= $key ?>]" rows="<?= $rows ?>" minlength="<?= $min ?>" maxlength="<?= $max ?>" required><?= e($texts[$key]['contenido']) ?></textarea>
+                <textarea class="form-control<?= isset($errors[$key]) ? ' is-invalid' : '' ?>" id="<?= $key ?>" name="contenido[<?= $key ?>]" rows="<?= $rows ?>" <?= textRules('el texto de ' . mb_strtolower($texts[$key]['titulo']), $min, $max, true, false) ?>><?= e($texts[$key]['contenido']) ?></textarea>
                 <div class="form-text">De <?= $min ?> a <?= $max ?> caracteres.</div>
                 <div class="invalid-feedback"><?= e($errors[$key] ?? $texts[$key]['titulo'] . ": de $min a $max caracteres.") ?></div>
               </div>

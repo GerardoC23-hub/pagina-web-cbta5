@@ -35,12 +35,12 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if (isset($contact['contacto_direccion'])): ?>
               <div class="col-md-7">
                 <label class="form-label" for="direccion">Dirección *</label>
-                <input class="form-control<?= isset($errors['contacto_direccion']) ? ' is-invalid' : '' ?>" id="direccion" name="contenido[contacto_direccion]" type="text" minlength="10" maxlength="200" value="<?= e($contact['contacto_direccion']['contenido']) ?>" required>
+                <input class="form-control<?= isset($errors['contacto_direccion']) ? ' is-invalid' : '' ?>" id="direccion" name="contenido[contacto_direccion]" type="text" <?= textRules('la dirección', 10, 200) ?> value="<?= e($contact['contacto_direccion']['contenido']) ?>">
                 <div class="invalid-feedback"><?= e($errors['contacto_direccion'] ?? 'Dirección: de 10 a 200 caracteres.') ?></div>
               </div>
               <div class="col-md-5">
                 <label class="form-label" for="direccion-map">Enlace del mapa</label>
-                <input class="form-control<?= isset($errors['contacto_direccion_enlace']) ? ' is-invalid' : '' ?>" id="direccion-map" name="enlace[contacto_direccion]" type="url" maxlength="255" placeholder="https://www.google.com/maps?q=…" value="<?= e($contact['contacto_direccion']['enlace']) ?>">
+                <input class="form-control<?= isset($errors['contacto_direccion_enlace']) ? ' is-invalid' : '' ?>" id="direccion-map" name="enlace[contacto_direccion]" type="url" maxlength="255" data-msg-type="Escribe un enlace completo que empiece con https://." placeholder="https://www.google.com/maps?q=…" value="<?= e($contact['contacto_direccion']['enlace']) ?>">
                 <div class="invalid-feedback"><?= e($errors['contacto_direccion_enlace'] ?? 'Enlace no válido.') ?></div>
               </div>
 <?php endif; ?>
@@ -48,7 +48,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if (isset($contact['contacto_telefono'])): ?>
               <div class="col-md-4">
                 <label class="form-label" for="telefono">Teléfono *</label>
-                <input class="form-control<?= isset($errors['contacto_telefono']) ? ' is-invalid' : '' ?>" id="telefono" name="contenido[contacto_telefono]" type="tel" maxlength="20" pattern="[0-9\s\(\)\+\-]{8,20}" value="<?= e($contact['contacto_telefono']['contenido']) ?>" required>
+                <input class="form-control<?= isset($errors['contacto_telefono']) ? ' is-invalid' : '' ?>" id="telefono" name="contenido[contacto_telefono]" type="tel" maxlength="20" pattern="[0-9\s\(\)\+\-]{8,20}" data-msg-required="Escribe el teléfono." data-msg-pattern="El teléfono tiene de 8 a 20 números (puede llevar espacios, + y -)." value="<?= e($contact['contacto_telefono']['contenido']) ?>" required>
                 <div class="invalid-feedback"><?= e($errors['contacto_telefono'] ?? 'Teléfono no válido.') ?></div>
               </div>
 <?php endif; ?>
@@ -56,7 +56,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if (isset($contact['contacto_correo'])): ?>
               <div class="col-md-8">
                 <label class="form-label" for="correo">Correo electrónico *</label>
-                <input class="form-control<?= isset($errors['contacto_correo']) ? ' is-invalid' : '' ?>" id="correo" name="contenido[contacto_correo]" type="email" maxlength="120" value="<?= e($contact['contacto_correo']['contenido']) ?>" required>
+                <input class="form-control<?= isset($errors['contacto_correo']) ? ' is-invalid' : '' ?>" id="correo" name="contenido[contacto_correo]" type="email" maxlength="120" data-msg-required="Escribe el correo." data-msg-type="Escribe un correo completo, por ejemplo nombre@cbta5.edu.mx." value="<?= e($contact['contacto_correo']['contenido']) ?>" required>
                 <div class="invalid-feedback"><?= e($errors['contacto_correo'] ?? 'Correo no válido.') ?></div>
               </div>
 <?php endif; ?>
@@ -64,7 +64,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if (isset($contact['contacto_horario'])): ?>
               <div class="col-12">
                 <label class="form-label" for="horario">Horario de atención *</label>
-                <input class="form-control<?= isset($errors['contacto_horario']) ? ' is-invalid' : '' ?>" id="horario" name="contenido[contacto_horario]" type="text" minlength="5" maxlength="100" value="<?= e($contact['contacto_horario']['contenido']) ?>" required>
+                <input class="form-control<?= isset($errors['contacto_horario']) ? ' is-invalid' : '' ?>" id="horario" name="contenido[contacto_horario]" type="text" <?= textRules('el horario', 5, 100) ?> value="<?= e($contact['contacto_horario']['contenido']) ?>">
                 <div class="invalid-feedback"><?= e($errors['contacto_horario'] ?? 'Horario: de 5 a 100 caracteres.') ?></div>
               </div>
 <?php endif; ?>
@@ -72,12 +72,12 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if (isset($contact['contacto_sitio'])): ?>
               <div class="col-md-5">
                 <label class="form-label" for="sitio">Sitio oficial (texto) *</label>
-                <input class="form-control<?= isset($errors['contacto_sitio']) ? ' is-invalid' : '' ?>" id="sitio" name="contenido[contacto_sitio]" type="text" minlength="3" maxlength="60" value="<?= e($contact['contacto_sitio']['contenido']) ?>" required>
+                <input class="form-control<?= isset($errors['contacto_sitio']) ? ' is-invalid' : '' ?>" id="sitio" name="contenido[contacto_sitio]" type="text" <?= textRules('el nombre del sitio', 3, 60) ?> value="<?= e($contact['contacto_sitio']['contenido']) ?>">
                 <div class="invalid-feedback"><?= e($errors['contacto_sitio'] ?? 'Nombre: de 3 a 60 caracteres.') ?></div>
               </div>
               <div class="col-md-7">
                 <label class="form-label" for="sitio-link">Sitio oficial (enlace) *</label>
-                <input class="form-control<?= isset($errors['contacto_sitio_enlace']) ? ' is-invalid' : '' ?>" id="sitio-link" name="enlace[contacto_sitio]" type="url" maxlength="255" placeholder="https://cbta5.net" value="<?= e($contact['contacto_sitio']['enlace']) ?>" required>
+                <input class="form-control<?= isset($errors['contacto_sitio_enlace']) ? ' is-invalid' : '' ?>" id="sitio-link" name="enlace[contacto_sitio]" type="url" maxlength="255" data-msg-type="Escribe un enlace completo que empiece con https://." placeholder="https://cbta5.net" value="<?= e($contact['contacto_sitio']['enlace']) ?>" required>
                 <div class="invalid-feedback"><?= e($errors['contacto_sitio_enlace'] ?? 'Enlace no válido.') ?></div>
               </div>
 <?php endif; ?>
@@ -100,7 +100,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
               </div>
               <div class="col-md-8">
                 <label class="form-label" for="<?= e($key) ?>-link"><?= e($row['titulo']) ?> (enlace)</label>
-                <input class="form-control<?= isset($errors[$key . '_enlace']) ? ' is-invalid' : '' ?>" id="<?= e($key) ?>-link" name="enlace[<?= e($key) ?>]" type="url" maxlength="255" placeholder="https://…" value="<?= e($row['enlace']) ?>">
+                <input class="form-control<?= isset($errors[$key . '_enlace']) ? ' is-invalid' : '' ?>" id="<?= e($key) ?>-link" name="enlace[<?= e($key) ?>]" type="url" maxlength="255" data-msg-type="Escribe un enlace completo que empiece con https://." placeholder="https://…" value="<?= e($row['enlace']) ?>">
                 <div class="invalid-feedback"><?= e($errors[$key . '_enlace'] ?? 'Enlace no válido.') ?></div>
               </div>
 <?php endforeach; ?>

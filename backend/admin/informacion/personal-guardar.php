@@ -3,6 +3,7 @@
 
 require __DIR__ . '/../../../includes/panel-auth.php';
 require __DIR__ . '/../../../includes/panel-files.php';
+require __DIR__ . '/../../../includes/panel-validation.php';
 require_once __DIR__ . '/../../../config/conexion.php';
 require_once __DIR__ . '/../../../includes/site-data.php';
 
@@ -39,7 +40,7 @@ $person = [];
 foreach (['nombre', 'cargo', 'tipo', 'correo', 'telefono', 'foto_credito'] as $field) {
   $person[$field] = trim($_POST[$field] ?? '');
 }
-$person['orden']      = is_numeric($_POST['orden'] ?? '') ? (int) $_POST['orden'] : 0;
+$person['orden']      = trim($_POST['orden'] ?? '');
 $person['autorizado'] = isset($_POST['autorizado']) ? 1 : 0;
 
 $removePhoto = isset($_POST['quitar_foto']);
@@ -49,23 +50,23 @@ $hasFile     = $file && $file['error'] !== UPLOAD_ERR_NO_FILE;
 // 3. Validar
 $errors = [];
 
-if (mb_strlen($person['nombre']) < 3 || mb_strlen($person['nombre']) > 120) {
-  $errors['nombre'] = 'Nombre: de 3 a 120 caracteres.';
+if (($message = nameError($person['nombre'])) !== '') {
+  $errors['nombre'] = $message;
 }
-if (mb_strlen($person['cargo']) < 3 || mb_strlen($person['cargo']) > 100) {
-  $errors['cargo'] = 'Cargo: de 3 a 100 caracteres.';
+if (($message = textError($person['cargo'], 'el cargo', 3, 100)) !== '') {
+  $errors['cargo'] = $message;
 }
 if (!in_array($person['tipo'], enumValues($conexion, 'tblweb_personal', 'tipo'), true)) {
   $errors['tipo'] = 'Elige un área.';
 }
 if ($person['correo'] !== '' && (!filter_var($person['correo'], FILTER_VALIDATE_EMAIL) || mb_strlen($person['correo']) > 120)) {
-  $errors['correo'] = 'Correo no válido.';
+  $errors['correo'] = 'Escribe un correo completo, por ejemplo nombre@cbta5.edu.mx.';
 }
 if ($person['telefono'] !== '' && !preg_match('/^[0-9\s()+\-]{8,20}$/', $person['telefono'])) {
-  $errors['telefono'] = 'Teléfono no válido.';
+  $errors['telefono'] = 'El teléfono tiene de 8 a 20 números (puede llevar espacios, + y -).';
 }
-if ($person['orden'] < 0 || $person['orden'] > 999) {
-  $errors['orden'] = 'Orden: de 0 a 999.';
+if (($message = orderError($person['orden'])) !== '') {
+  $errors['orden'] = $message;
 }
 if ($hasFile && ($message = imageError($file)) !== '') {
   $errors['foto'] = $message;
@@ -74,10 +75,8 @@ if ($hasFile && ($message = imageError($file)) !== '') {
 // ¿Quedará con foto? Solo si sube una o conserva la que tenía
 $willHavePhoto = $hasFile || ($currentPhoto !== '' && !$removePhoto);
 
-if ($willHavePhoto && $person['foto_credito'] === '') {
-  $errors['foto_credito'] = 'Escribe el autor de la foto.';
-} elseif (mb_strlen($person['foto_credito']) > 120) {
-  $errors['foto_credito'] = 'Crédito: máximo 120 caracteres.';
+if (($message = textError($person['foto_credito'], 'el crédito', 3, 120, $willHavePhoto)) !== '') {
+  $errors['foto_credito'] = $message;
 }
 
 // Con errores: se regresa al formulario con lo que escribió y los mensajes
@@ -108,6 +107,7 @@ $correo   = $optional($person['correo']);
 $telefono = $optional($person['telefono']);
 $photoDb  = $optional($photo);
 $credit   = $photo === '' ? null : $person['foto_credito'];
+$order    = (int) $person['orden'];
 
 try {
   if ($isEditing) {
@@ -116,13 +116,13 @@ try {
              WHERE id_personal = ?";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "sssssssiii", $person['nombre'], $person['cargo'], $person['tipo'], $correo, $telefono,
-      $photoDb, $credit, $person['orden'], $person['autorizado'], $id);
+      $photoDb, $credit, $order, $person['autorizado'], $id);
   } else {
     $sql  = "INSERT INTO tblweb_personal (nombre, cargo, tipo, correo, telefono, foto, foto_credito, orden, autorizado)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "sssssssii", $person['nombre'], $person['cargo'], $person['tipo'], $correo, $telefono,
-      $photoDb, $credit, $person['orden'], $person['autorizado']);
+      $photoDb, $credit, $order, $person['autorizado']);
   }
   mysqli_stmt_execute($stmt);
   $savedId = $isEditing ? (int) $id : mysqli_insert_id($conexion);

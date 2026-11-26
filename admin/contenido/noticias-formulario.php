@@ -37,20 +37,20 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 
               <div class="col-12">
                 <label class="form-label" for="titulo">Título *</label>
-                <input class="form-control<?= isset($errors['titulo']) ? ' is-invalid' : '' ?>" id="titulo" name="titulo" type="text" minlength="5" maxlength="150" value="<?= e($item['titulo']) ?>" required>
+                <input class="form-control<?= isset($errors['titulo']) ? ' is-invalid' : '' ?>" id="titulo" name="titulo" type="text" <?= textRules('el título', 5, 150) ?> value="<?= e($item['titulo']) ?>">
                 <div class="invalid-feedback"><?= e($errors['titulo'] ?? 'Título: de 5 a 150 caracteres.') ?></div>
               </div>
 
               <div class="col-12">
                 <label class="form-label" for="resumen">Resumen *</label>
-                <input class="form-control<?= isset($errors['resumen']) ? ' is-invalid' : '' ?>" id="resumen" name="resumen" type="text" minlength="10" maxlength="255" value="<?= e($item['resumen']) ?>" required>
+                <input class="form-control<?= isset($errors['resumen']) ? ' is-invalid' : '' ?>" id="resumen" name="resumen" type="text" <?= textRules('el resumen', 10, 255) ?> value="<?= e($item['resumen']) ?>">
                 <div class="form-text">Una o dos frases. Aparece en las tarjetas.</div>
                 <div class="invalid-feedback"><?= e($errors['resumen'] ?? 'Resumen: de 10 a 255 caracteres.') ?></div>
               </div>
 
               <div class="col-12">
                 <label class="form-label" for="contenido">Contenido *</label>
-                <textarea class="form-control<?= isset($errors['contenido']) ? ' is-invalid' : '' ?>" id="contenido" name="contenido" rows="9" minlength="30" maxlength="5000" required><?= e($item['contenido']) ?></textarea>
+                <textarea class="form-control<?= isset($errors['contenido']) ? ' is-invalid' : '' ?>" id="contenido" name="contenido" rows="9" <?= textRules('el contenido', 30, 5000, true, false) ?>><?= e($item['contenido']) ?></textarea>
                 <div class="form-text">De 30 a 5000 caracteres.</div>
                 <div class="invalid-feedback"><?= e($errors['contenido'] ?? 'Contenido: de 30 a 5000 caracteres.') ?></div>
               </div>
@@ -69,7 +69,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 <?php if ($item['imagen']): ?>
                 <img class="d-block rounded mb-2" src="<?= e($base . $item['imagen']) ?>" width="192" height="108" alt="Imagen actual de la noticia">
 <?php endif; ?>
-                <input class="form-control<?= isset($errors['imagen']) ? ' is-invalid' : '' ?>" id="imagen" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" data-max-mb="1">
+                <input class="form-control<?= isset($errors['imagen']) ? ' is-invalid' : '' ?>" id="imagen" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" data-max-mb="1" data-msg-type="La imagen debe ser JPG, PNG o WebP.">
                 <div class="form-text">JPG, PNG o WebP. Máximo 1 MB.<?= $item['imagen'] ? ' Déjala vacía para conservar la actual.' : '' ?></div>
                 <div class="invalid-feedback"><?= e($errors['imagen'] ?? 'Formato no válido (JPG, PNG o WebP).') ?></div>
 <?php if ($item['imagen']): ?>
@@ -82,7 +82,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 
               <div class="col-md-6">
                 <label class="form-label" for="imagen_credito">Crédito de la imagen</label>
-                <input class="form-control<?= isset($errors['imagen_credito']) ? ' is-invalid' : '' ?>" id="imagen_credito" name="imagen_credito" type="text" maxlength="120" value="<?= e($item['imagen_credito']) ?>">
+                <input class="form-control<?= isset($errors['imagen_credito']) ? ' is-invalid' : '' ?>" id="imagen_credito" name="imagen_credito" type="text" <?= textRules('el crédito', 3, 120, false, true) ?> value="<?= e($item['imagen_credito']) ?>">
                 <div class="form-text">Quién tomó la foto. Obligatorio si hay imagen.</div>
                 <div class="invalid-feedback"><?= e($errors['imagen_credito'] ?? 'Escribe el autor de la imagen.') ?></div>
               </div>

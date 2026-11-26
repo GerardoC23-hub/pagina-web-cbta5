@@ -4,6 +4,7 @@
 // uploads/carrusel/titulo-del-slide-a1b2c3.jpg
 
 require __DIR__ . '/../../../includes/panel-auth.php';
+require __DIR__ . '/../../../includes/panel-validation.php';
 require_once __DIR__ . '/../../../config/conexion.php';
 require_once __DIR__ . '/../../../includes/site-data.php';
 
@@ -48,22 +49,39 @@ $slide = [];
 foreach (['etiqueta', 'titulo', 'descripcion', 'imagen_alt', 'imagen_credito', 'fecha_inicio', 'fecha_fin'] as $field) {
   $slide[$field] = trim($_POST[$field] ?? '');
 }
-$slide['orden']   = is_numeric($_POST['orden'] ?? '') ? (int) $_POST['orden'] : 0;
+$slide['orden']   = trim($_POST['orden'] ?? '');
 $slide['visible'] = isset($_POST['visible']) ? 1 : 0;
 
 // 2. Validar los textos
 $errors = [];
 
-if (mb_strlen($slide['titulo']) < 3 || mb_strlen($slide['titulo']) > 150) {
-  $errors['titulo'] = 'Título: de 3 a 150 caracteres.';
+if (($message = textError($slide['etiqueta'], 'la etiqueta', 3, 60, false)) !== '') {
+  $errors['etiqueta'] = $message;
 }
-if (mb_strlen($slide['imagen_alt']) < 8) {
-  $errors['imagen_alt'] = 'Describe la imagen (mínimo 8 caracteres).';
+if (($message = textError($slide['titulo'], 'el título', 3, 150)) !== '') {
+  $errors['titulo'] = $message;
 }
-if ($slide['imagen_credito'] === '') {
-  $errors['imagen_credito'] = 'Escribe el autor de la foto.';
+if (($message = textError($slide['descripcion'], 'la descripción', 3, 255, false)) !== '') {
+  $errors['descripcion'] = $message;
 }
-if ($slide['fecha_inicio'] !== '' && $slide['fecha_fin'] !== '' && $slide['fecha_fin'] < $slide['fecha_inicio']) {
+if (($message = textError($slide['imagen_alt'], 'el texto alternativo', 8, 150)) !== '') {
+  $errors['imagen_alt'] = $message;
+}
+if (($message = textError($slide['imagen_credito'], 'el crédito', 3, 120)) !== '') {
+  $errors['imagen_credito'] = $message;
+}
+if (($message = orderError($slide['orden'])) !== '') {
+  $errors['orden'] = $message;
+}
+foreach (['fecha_inicio', 'fecha_fin'] as $field) {
+  if ($slide[$field] !== '') {
+    $date = DateTime::createFromFormat('Y-m-d', $slide[$field]);
+    if (!$date || $date->format('Y-m-d') !== $slide[$field]) {
+      $errors[$field] = 'La fecha no es válida.';
+    }
+  }
+}
+if (!isset($errors['fecha_inicio'], $errors['fecha_fin']) && $slide['fecha_inicio'] !== '' && $slide['fecha_fin'] !== '' && $slide['fecha_fin'] < $slide['fecha_inicio']) {
   $errors['fecha_fin'] = 'La fecha final es anterior a la inicial.';
 }
 
@@ -137,6 +155,7 @@ if ($hasFile) {
 // 6. Guardar en la base (los campos opcionales vacíos van como NULL)
 $imagePath    = $newPath !== '' ? $newPath : $current['imagen'];
 $optional     = fn ($value) => $value === '' ? null : $value;
+$order        = (int) $slide['orden'];
 $etiqueta     = $optional($slide['etiqueta']);
 $descripcion  = $optional($slide['descripcion']);
 $fechaInicio  = $optional($slide['fecha_inicio']);
@@ -149,14 +168,14 @@ try {
              WHERE id_carrusel = ?";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "ssssssssiii", $etiqueta, $slide['titulo'], $descripcion, $imagePath, $slide['imagen_alt'], $slide['imagen_credito'],
-      $fechaInicio, $fechaFin, $slide['orden'], $slide['visible'], $id);
+      $fechaInicio, $fechaFin, $order, $slide['visible'], $id);
   } else {
     $sql  = "INSERT INTO tblweb_carrusel (etiqueta, titulo, descripcion, imagen, imagen_alt, imagen_credito,
                     fecha_inicio, fecha_fin, orden, visible)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conexion, $sql);
     mysqli_stmt_bind_param($stmt, "ssssssssii", $etiqueta, $slide['titulo'], $descripcion, $imagePath, $slide['imagen_alt'], $slide['imagen_credito'],
-      $fechaInicio, $fechaFin, $slide['orden'], $slide['visible']);
+      $fechaInicio, $fechaFin, $order, $slide['visible']);
   }
   mysqli_stmt_execute($stmt);
   $newId = $isEditing ? (int) $id : mysqli_insert_id($conexion);

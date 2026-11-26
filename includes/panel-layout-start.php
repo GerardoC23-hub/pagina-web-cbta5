@@ -2,6 +2,7 @@
 // Panel shell (Bootstrap): side menu, header (user name + sign out) and the opening <main>.
 // Set $panelPage (section id) and $title before including this file.
 require_once __DIR__ . '/panel-icons.php';
+require_once __DIR__ . '/panel-validation.php';
 
 // Escapa texto para mostrarlo en HTML
 function e(?string $text): string
@@ -31,12 +32,12 @@ $initial   = mb_strtoupper(mb_substr($user['name'], 0, 1));
       <nav aria-label="Secciones del panel">
         <ul class="nav flex-column">
 <?php $lastGroup = ''; ?>
-<?php foreach ($menu as $item): ?>
-<?php if (in_array($user['role'], $item['roles'], true)): ?>
-<?php if ($item['group'] !== $lastGroup && $item['group'] !== 'Principal'): $lastGroup = $item['group']; ?>
-          <li class="text-gold small fw-bold text-uppercase px-2 pt-3 pb-1"><?= $item['group'] ?></li>
+<?php foreach ($menu as $menuItem): ?>
+<?php if (in_array($user['role'], $menuItem['roles'], true)): ?>
+<?php if ($menuItem['group'] !== $lastGroup && $menuItem['group'] !== 'Principal'): $lastGroup = $menuItem['group']; ?>
+          <li class="text-gold small fw-bold text-uppercase px-2 pt-3 pb-1"><?= $menuItem['group'] ?></li>
 <?php endif; ?>
-          <li><a class="nav-link d-flex align-items-center gap-3 rounded<?= $panelPage === $item['id'] ? ' active' : '' ?>"<?= $panelPage === $item['id'] ? ' aria-current="page"' : '' ?> href="<?= $base ?>admin/<?= $item['file'] ?>"><?= panel_icon($item['icon']) ?><span><?= $item['label'] ?></span></a></li>
+          <li><a class="nav-link d-flex align-items-center gap-3 rounded<?= $panelPage === $menuItem['id'] ? ' active' : '' ?>"<?= $panelPage === $menuItem['id'] ? ' aria-current="page"' : '' ?> href="<?= $base ?>admin/<?= $menuItem['file'] ?>"><?= panel_icon($menuItem['icon']) ?><span><?= $menuItem['label'] ?></span></a></li>
 <?php endif; ?>
 <?php endforeach; ?>
         </ul>

@@ -3,12 +3,9 @@
 .DS_Store
 Thumbs.db
 
-# Uploaded files (only the folders are tracked)
-uploads/**/*.*
+# Las imágenes y archivos que se suben desde el panel (uploads/) SÍ se guardan en el repositorio,
+# para que todo el equipo vea las mismas imágenes. storage/ es privado y no se sube.
 storage/**/*.*
-!uploads/**/.gitkeep
-!uploads/.htaccess
-!uploads/README.md
 !storage/**/.gitkeep
 !storage/.htaccess
 

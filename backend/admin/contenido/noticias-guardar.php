@@ -3,6 +3,7 @@
 
 require __DIR__ . '/../../../includes/panel-auth.php';
 require __DIR__ . '/../../../includes/panel-files.php';
+require __DIR__ . '/../../../includes/panel-validation.php';
 require_once __DIR__ . '/../../../config/conexion.php';
 require_once __DIR__ . '/../../../includes/site-data.php';
 
@@ -47,14 +48,14 @@ $hasFile     = $file && $file['error'] !== UPLOAD_ERR_NO_FILE;
 // 3. Validar
 $errors = [];
 
-if (mb_strlen($item['titulo']) < 5 || mb_strlen($item['titulo']) > 150) {
-  $errors['titulo'] = 'Título: de 5 a 150 caracteres.';
+if (($message = textError($item['titulo'], 'el título', 5, 150)) !== '') {
+  $errors['titulo'] = $message;
 }
-if (mb_strlen($item['resumen']) < 10 || mb_strlen($item['resumen']) > 255) {
-  $errors['resumen'] = 'Resumen: de 10 a 255 caracteres.';
+if (($message = textError($item['resumen'], 'el resumen', 10, 255)) !== '') {
+  $errors['resumen'] = $message;
 }
-if (mb_strlen($item['contenido']) < 30 || mb_strlen($item['contenido']) > 5000) {
-  $errors['contenido'] = 'Contenido: de 30 a 5000 caracteres.';
+if (($message = textError($item['contenido'], 'el contenido', 30, 5000)) !== '') {
+  $errors['contenido'] = $message;
 }
 if (!in_array($item['categoria'], enumValues($conexion, 'tblweb_publicaciones', 'categoria'), true)) {
   $errors['categoria'] = 'Elige una categoría.';
@@ -73,10 +74,8 @@ if ($hasFile && ($message = imageError($file)) !== '') {
 // ¿Quedará con imagen? Solo si sube una o conserva la que tenía
 $willHaveImage = $hasFile || ($currentImage !== '' && !$removeImage);
 
-if ($willHaveImage && $item['imagen_credito'] === '') {
-  $errors['imagen_credito'] = 'Escribe el autor de la imagen.';
-} elseif (mb_strlen($item['imagen_credito']) > 120) {
-  $errors['imagen_credito'] = 'Crédito: máximo 120 caracteres.';
+if (($message = textError($item['imagen_credito'], 'el crédito', 3, 120, $willHaveImage)) !== '') {
+  $errors['imagen_credito'] = $message;
 }
 
 // Con errores: se regresa al formulario con lo que escribió y los mensajes
