@@ -28,8 +28,8 @@ foreach ($staff as $person) {
 }
 $total = count($results);
 
-require __DIR__ . '/includes/head.php';
-require __DIR__ . '/includes/header.php';
+require __DIR__ . './includes/head.php';
+require __DIR__ . './includes/header.php';
 ?>
 
 <main id="principal">

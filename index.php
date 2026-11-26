@@ -7,7 +7,6 @@ $styles      = [];
 
 // Datos que muestra la página
 require __DIR__ . '/backend/publico/inicio-datos.php';
-
 require __DIR__ . '/includes/head.php';
 require __DIR__ . '/includes/header.php';
 ?>
