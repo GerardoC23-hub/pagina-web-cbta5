@@ -47,3 +47,10 @@ h1, .h1 { font-size: 2rem; }  h2 { font-size: 2rem; }  h3 { font-size: 1.5rem; }
 .bg-gold { background: #e6d194 !important; color: #002f2a; }
 .text-gold { color: #e6d194; }
 .border-gold { border-color: #e6d194 !important; }
+
+/*para que se vea chida mi vista*/
+/* about.css · only what Bootstrap does not cover: colored top line on the mission and vision cards */
+.mission-card { border-top: 4px solid var(--green); }
+.vision-card  { border-top: 4px solid var(--burgundy); }
+.value-item   { border-left: 4px solid var(--gold); }
+.timeline-dot { margin-left: -1.5px; }
