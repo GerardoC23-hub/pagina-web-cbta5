@@ -62,7 +62,7 @@ require __DIR__ . '/includes/header.php';
           <h2 class="h4" id="map-alumnos">Alumnos</h2>
           <ul class="mb-0">
             <li><a href="<?= $base ?>pages/acceso.php">Acceso alumnos</a></li>
-            <li><a href="<?= $base ?>panel/recuperar.php">Recuperar contraseña</a></li>
+            <li><a href="<?= $base ?>admin/recuperar.php">Recuperar contraseña</a></li>
           </ul>
         </section>
 

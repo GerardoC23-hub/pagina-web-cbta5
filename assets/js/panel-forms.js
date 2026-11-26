@@ -21,14 +21,31 @@
     new bootstrap.Toast(toast, { delay: 4000 }).show();
   }
 
-  // Archivos: revisa el peso máximo (data-max-mb) antes de enviar
+  // Mensaje específico bajo cada campo, según lo que falló (data-msg-required, -min, -pattern, -type, -range)
+  function showFieldMessage(field) {
+    var feedback = field.parentElement.querySelector('.invalid-feedback');
+    var v = field.validity;
+    var key = v.customError ? '' : v.valueMissing ? 'msgRequired' : v.tooShort ? 'msgMin' : v.patternMismatch ? 'msgPattern' :
+      v.typeMismatch ? 'msgType' : (v.rangeUnderflow || v.rangeOverflow || v.badInput) ? 'msgRange' : '';
+    if (!feedback) { return; }
+    if (v.customError) { feedback.textContent = field.validationMessage; }
+    else if (key && field.dataset[key]) { feedback.textContent = field.dataset[key]; }
+  }
+
+  // Archivos: revisa el formato (accept) y el peso máximo (data-max-mb) antes de enviar
   document.querySelectorAll('input[type="file"][data-max-mb]').forEach(function (input) {
     input.addEventListener('change', function () {
       var file = input.files[0];
-      var tooBig = file && file.size > parseFloat(input.dataset.maxMb) * 1024 * 1024;
-      input.setCustomValidity(tooBig ? 'El archivo pesa más de ' + input.dataset.maxMb + ' MB.' : '');
-      var feedback = input.parentElement.querySelector('.invalid-feedback');
-      if (feedback && tooBig) { feedback.textContent = input.validationMessage; }
+      var types = input.accept.split(',').map(function (type) { return type.trim(); });
+      var byMime = types.length > 0 && types.every(function (type) { return type.indexOf('/') > 0; });
+      var message = '';
+      if (file && byMime && types.indexOf(file.type) === -1) {
+        message = input.dataset.msgType || 'Formato no permitido.';
+      } else if (file && file.size > parseFloat(input.dataset.maxMb) * 1024 * 1024) {
+        message = 'El archivo pesa más de ' + input.dataset.maxMb + ' MB.';
+      }
+      input.setCustomValidity(message);
+      showFieldMessage(input);
     });
   });
 
@@ -38,6 +55,7 @@
       event.preventDefault();
       if (!form.checkValidity()) {
         form.classList.add('was-validated');
+        form.querySelectorAll(':invalid').forEach(showFieldMessage);
         var firstInvalid = form.querySelector(':invalid');
         if (firstInvalid) { firstInvalid.focus(); }
         return;
@@ -53,6 +71,8 @@
       showToast(form.dataset.success || 'Cambios guardados.', 'success');
     });
     form.addEventListener('reset', function () { form.classList.remove('was-validated'); });
+    // Mientras corrige, el mensaje bajo el campo cambia según lo que falte
+    form.addEventListener('input', function (event) { showFieldMessage(event.target); });
   });
 
   // Ventanas: título y datos del registro que se abre (data-modal-title y data-record en el botón)

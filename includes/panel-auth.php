@@ -2,8 +2,8 @@
 // Panel session helpers: call panel_require_login() at the top of every private page.
 session_start();
 
-// URL of the panel folder (works from panel/ and from its subfolders)
-$panelDir = str_replace('\\', '/', realpath(__DIR__ . '/../panel'));
+// URL of the panel folder (works from admin/ and from its subfolders)
+$panelDir = str_replace('\\', '/', realpath(__DIR__ . '/../admin'));
 $docRoot  = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'] ?? ''));
 define('PANEL_URL', rtrim(str_replace($docRoot, '', $panelDir), '/'));
 

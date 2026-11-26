@@ -50,3 +50,38 @@ function deleteImage(?string $path): void
     unlink($full);
   }
 }
+
+// Revisa el video MP4 subido: peso, extensión y tipo real.
+// Regresa el mensaje de error, o '' si está bien.
+function videoError(array $file, int $maxMb = 10): string
+{
+  if (in_array($file['error'], [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true) || $file['size'] > $maxMb * 1024 * 1024) {
+    return "El video pesa más de $maxMb MB.";
+  }
+  if ($file['error'] !== UPLOAD_ERR_OK) {
+    return 'No se pudo subir el video.';
+  }
+
+  $ext  = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+  $mime = (new finfo(FILEINFO_MIME_TYPE))->file($file['tmp_name']);
+
+  if ($ext !== 'mp4' || $mime !== 'video/mp4') {
+    return 'Formato no válido (solo MP4).';
+  }
+  return '';
+}
+
+// Guarda el video en uploads/<carpeta>/ con un nombre propio.
+// Regresa la ruta para la base, o '' si no se pudo guardar.
+function saveVideo(array $file, string $folder, string $prefix): string
+{
+  $dir = __DIR__ . '/../uploads/' . $folder . '/';
+
+  if (!is_dir($dir)) {
+    mkdir($dir, 0755, true);
+  }
+
+  $path = 'uploads/' . $folder . '/' . $prefix . '-' . bin2hex(random_bytes(4)) . '.mp4';
+
+  return move_uploaded_file($file['tmp_name'], __DIR__ . '/../' . $path) ? $path : '';
+}
