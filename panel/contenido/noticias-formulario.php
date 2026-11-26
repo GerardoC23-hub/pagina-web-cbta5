@@ -99,7 +99,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
               <div class="col-md-4">
                 <label class="form-label" for="categoria">Categoría *</label>
                 <select class="form-select<?= isset($errors['categoria']) ? ' is-invalid' : '' ?>" id="categoria" name="categoria" required>
-<?php foreach (['Noticia', 'Aviso', 'Evento', 'Logro'] as $option): ?>
+<?php foreach ($categories as $option): ?>
                   <option value="<?= $option ?>"<?= $item['categoria'] === $option ? ' selected' : '' ?>><?= $option ?></option>
 <?php endforeach; ?>
                 </select>
@@ -116,7 +116,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
               <div class="col-md-4">
                 <label class="form-label" for="estado">Estado *</label>
                 <select class="form-select<?= isset($errors['estado']) ? ' is-invalid' : '' ?>" id="estado" name="estado" required>
-<?php foreach (['Borrador', 'Publicada'] as $option): ?>
+<?php foreach ($states as $option): ?>
                   <option value="<?= $option ?>"<?= $item['estado'] === $option ? ' selected' : '' ?>><?= $option ?></option>
 <?php endforeach; ?>
                 </select>

@@ -1,37 +1,21 @@
 <?php
-$base   = '';
+$base   = '../';
 $pagina = 'noticias';
 $styles = [];
 
-// Noticias de ejemplo (el mismo archivo que usa la lista)
-$news = require __DIR__ . '/includes/news-data.php';
-
-// Color de la etiqueta de cada categoría
-$badgeColors = [
-    'Evento' => 'bg-info-subtle text-info-emphasis',
-    'Aviso'  => 'bg-warning-subtle text-warning-emphasis',
-    'Logro'  => 'bg-success-subtle text-success-emphasis',
-];
-
-// Busca la noticia que pide la dirección (noticia.php?id=3)
-$id    = (int) ($_GET['id'] ?? 0);
-$item  = null;
-foreach ($news as $candidate) {
-    if ($candidate['id'] === $id) {
-        $item = $candidate;
-    }
-}
+// Datos que muestra la pantalla
+require __DIR__ . '/../backend/publico/noticia-datos.php';
 
 if ($item === null) {
     http_response_code(404);
     $title = 'Noticia no encontrada · CBTa No. 5';
 } else {
-    $title       = $item['title'] . ' · CBTa No. 5';
-    $description = $item['summary'];
+    $title       = $item['titulo'] . ' · CBTa No. 5';
+    $description = (string) $item['resumen'];
 }
 
-require __DIR__ . '/includes/head.php';
-require __DIR__ . '/includes/header.php';
+require __DIR__ . '/../includes/head.php';
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <main id="principal">
@@ -40,10 +24,10 @@ require __DIR__ . '/includes/header.php';
     <!-- Ruta de navegación -->
     <nav class="small mb-3" aria-label="Ruta de navegación">
       <ol class="breadcrumb mb-0">
-        <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+        <li class="breadcrumb-item"><a href="../index.php">Inicio</a></li>
         <li class="breadcrumb-item"><a href="noticias.php">Noticias y avisos</a></li>
 <?php if ($item !== null): ?>
-        <li class="breadcrumb-item active" aria-current="page"><?= htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') ?></li>
+        <li class="breadcrumb-item active" aria-current="page"><?= h($item['titulo']) ?></li>
 <?php endif; ?>
       </ol>
     </nav>
@@ -56,23 +40,23 @@ require __DIR__ . '/includes/header.php';
 <?php else: ?>
     <!-- Categoría y fecha -->
     <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-      <span class="badge rounded-pill <?= $badgeColors[$item['category']] ?? 'bg-secondary-subtle text-secondary-emphasis' ?>"><?= htmlspecialchars($item['category'], ENT_QUOTES, 'UTF-8') ?></span>
-      <small class="text-body-secondary"><?= htmlspecialchars($item['date'], ENT_QUOTES, 'UTF-8') ?></small>
+      <span class="badge rounded-pill <?= $badgeColors[$item['categoria']] ?? 'bg-secondary-subtle text-secondary-emphasis' ?>"><?= h($item['categoria']) ?></span>
+      <small class="text-body-secondary"><?= h(formatDateEs($item['fecha_publicacion'])) ?></small>
     </div>
 
-    <h1 class="mb-4"><?= htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') ?></h1>
+    <h1 class="mb-4"><?= h($item['titulo']) ?></h1>
 
     <div class="row">
       <div class="col-lg-8">
-        <img class="photo mb-4" src="assets/img/placeholder.svg" width="640" height="360" alt="Foto por agregar">
+        <img class="photo mb-4" src="<?= h(siteFile($item['imagen'], $base)) ?>" width="640" height="360" alt="<?= h($item['titulo']) ?>">
 
-        <p class="lead text-body-secondary"><?= htmlspecialchars($item['summary'], ENT_QUOTES, 'UTF-8') ?></p>
-        <p><?= htmlspecialchars($item['content'], ENT_QUOTES, 'UTF-8') ?></p>
-
-<?php if ($item['source'] !== ''): ?>
-        <p class="small text-body-secondary">Fuente: <strong><?= htmlspecialchars($item['source'], ENT_QUOTES, 'UTF-8') ?></strong></p>
+<?php if ($item['imagen'] && $item['imagen_credito']): ?>
+        <p class="small text-body-secondary mt-n3 mb-4">Foto: <?= h($item['imagen_credito']) ?></p>
 <?php endif; ?>
-
+<?php if ($item['resumen']): ?>
+        <p class="lead text-body-secondary"><?= h($item['resumen']) ?></p>
+<?php endif; ?>
+        <div><?= nl2br(h($item['contenido'])) ?></div>
         <a class="btn btn-outline-primary mt-3" href="noticias.php">Volver a noticias y avisos</a>
       </div>
     </div>
@@ -81,4 +65,4 @@ require __DIR__ . '/includes/header.php';
   </div>
 </main>
 
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/../includes/footer.php'; ?>

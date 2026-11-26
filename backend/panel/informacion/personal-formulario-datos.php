@@ -1,8 +1,10 @@
 <?php
 // Datos del formulario de Personal: con ?id se edita una persona; sin id se agrega una nueva.
-// Deja: $id, $isEditing, $person, $errors, $error
+// Deja: $id, $isEditing, $person, $errors, $error, $types
 
-require_once __DIR__ . '/../../../config/conexion.php';
+require_once __DIR__ . '/../../../includes/site-data.php';
+
+$types = enumValues($conexion, 'tblweb_personal', 'tipo');
 
 $id        = $_GET['id'] ?? null;
 $isEditing = $id !== null && ctype_digit((string) $id);

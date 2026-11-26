@@ -4,6 +4,7 @@
 require __DIR__ . '/../../../includes/panel-auth.php';
 require __DIR__ . '/../../../includes/panel-files.php';
 require_once __DIR__ . '/../../../config/conexion.php';
+require_once __DIR__ . '/../../../includes/site-data.php';
 
 panel_require_login();
 
@@ -54,7 +55,7 @@ if (mb_strlen($person['nombre']) < 3 || mb_strlen($person['nombre']) > 120) {
 if (mb_strlen($person['cargo']) < 3 || mb_strlen($person['cargo']) > 100) {
   $errors['cargo'] = 'Cargo: de 3 a 100 caracteres.';
 }
-if (!in_array($person['tipo'], ['Directivo', 'Docente', 'Departamento'], true)) {
+if (!in_array($person['tipo'], enumValues($conexion, 'tblweb_personal', 'tipo'), true)) {
   $errors['tipo'] = 'Elige un área.';
 }
 if ($person['correo'] !== '' && (!filter_var($person['correo'], FILTER_VALIDATE_EMAIL) || mb_strlen($person['correo']) > 120)) {

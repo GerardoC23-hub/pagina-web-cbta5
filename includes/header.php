@@ -56,7 +56,7 @@ $base   = $base ?? '';
               <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/noticias.php">Noticias y avisos</a></li>
               <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/materiales.php">Materiales educativos</a></li>
               <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/solicitudes.php">Solicitudes en línea</a></li>
-              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>pages/enlaces.php">Enlaces de interés</a></li>
+              <li><a class="dropdown-item py-2 ps-4 ps-xl-3" href="<?= $base ?>enlaces.php">Enlaces de interés</a></li>
             </ul>
           </li>
 

@@ -1,38 +1,15 @@
 <?php
-$base        = '';
+$base        = '../';
 $pagina      = 'noticias';
 $title       = 'Noticias y avisos · CBTa No. 5';
 $description = 'Avisos, eventos y logros del CBTa No. 5 de Huejutla de Reyes, Hidalgo.';
 $styles      = [];
 
-// Lo que la persona escribió en el buscador y el filtro (vacío si no hay nada)
-$search   = $_GET['search'] ?? '';
-$category = $_GET['category'] ?? '';
+// Datos que muestra la pantalla
+require __DIR__ . '/../backend/publico/noticias-datos.php';
 
-// Noticias de ejemplo (viven en un archivo aparte porque el detalle también las usa)
-$news = require __DIR__ . '/includes/news-data.php';
-
-// Color de la etiqueta de cada categoría
-$badgeColors = [
-    'Evento' => 'bg-info-subtle text-info-emphasis',
-    'Aviso'  => 'bg-warning-subtle text-warning-emphasis',
-    'Logro'  => 'bg-success-subtle text-success-emphasis',
-];
-
-// Se queda solo con las noticias que coinciden con la categoría y con lo escrito en el buscador
-$results = [];
-foreach ($news as $item) {
-    $matchesCategory = $category === '' || $item['category'] === $category;
-    $matchesText     = $search === '' || stripos($item['title'] . ' ' . $item['summary'], $search) !== false;
-
-    if ($matchesCategory && $matchesText) {
-        $results[] = $item;
-    }
-}
-$total = count($results);
-
-require __DIR__ . '/includes/head.php';
-require __DIR__ . '/includes/header.php';
+require __DIR__ . '/../includes/head.php';
+require __DIR__ . '/../includes/header.php';
 ?>
 
 <main id="principal">
@@ -52,16 +29,16 @@ require __DIR__ . '/includes/header.php';
 
         <div class="col-md-6">
           <label class="form-label" for="search">Buscar noticias</label>
-          <input class="form-control" type="search" id="search" name="search" placeholder="Buscar por palabra…" value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>">
+          <input class="form-control" type="search" id="search" name="search" placeholder="Buscar por palabra…" value="<?= h($search) ?>">
         </div>
 
         <div class="col-md-3">
           <label class="form-label" for="category">Categoría</label>
           <select class="form-select" id="category" name="category">
             <option value="">Todas las categorías</option>
-            <option value="Evento"<?= $category === 'Evento' ? ' selected' : '' ?>>Evento</option>
-            <option value="Aviso"<?= $category === 'Aviso' ? ' selected' : '' ?>>Aviso</option>
-            <option value="Logro"<?= $category === 'Logro' ? ' selected' : '' ?>>Logro</option>
+<?php foreach ($categories as $option): ?>
+            <option value="<?= h($option) ?>"<?= $category === $option ? ' selected' : '' ?>><?= h($option) ?></option>
+<?php endforeach; ?>
           </select>
         </div>
 
@@ -84,20 +61,20 @@ require __DIR__ . '/includes/header.php';
       <div class="alert alert-info mb-0">No se encontraron publicaciones con esos datos. Prueba con otra búsqueda o limpia los filtros.</div>
 <?php else: ?>
       <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-<?php foreach ($results as $item): ?>
+<?php foreach ($news as $item): ?>
         <article class="col">
           <div class="card card-hover h-100 p-3">
-            <img class="photo mb-3" src="assets/img/placeholder.svg" width="640" height="360" alt="Foto por agregar">
+            <img class="photo mb-3" src="<?= h(siteFile($item['imagen'], $base)) ?>" width="640" height="360" alt="<?= h($item['titulo']) ?>" loading="lazy">
 
             <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
-              <span class="badge rounded-pill <?= $badgeColors[$item['category']] ?? 'bg-secondary-subtle text-secondary-emphasis' ?>"><?= htmlspecialchars($item['category'], ENT_QUOTES, 'UTF-8') ?></span>
-              <small class="text-body-secondary"><?= htmlspecialchars($item['date'], ENT_QUOTES, 'UTF-8') ?></small>
+              <span class="badge rounded-pill <?= $badgeColors[$item['categoria']] ?? 'bg-secondary-subtle text-secondary-emphasis' ?>"><?= h($item['categoria']) ?></span>
+              <small class="text-body-secondary"><?= h(formatDateEs($item['fecha_publicacion'])) ?></small>
             </div>
 
-            <h2 class="h5"><?= htmlspecialchars($item['title'], ENT_QUOTES, 'UTF-8') ?></h2>
-            <p class="text-body-secondary"><?= htmlspecialchars($item['summary'], ENT_QUOTES, 'UTF-8') ?></p>
+            <h2 class="h5"><?= h($item['titulo']) ?></h2>
+            <p class="text-body-secondary"><?= h($item['resumen']) ?></p>
 
-            <a class="stretched-link card-link fw-bold mt-auto text-decoration-none" href="noticia.php?id=<?= (int) $item['id'] ?>">Leer más</a>
+            <a class="stretched-link card-link fw-bold mt-auto text-decoration-none" href="noticia.php?id=<?= (int) $item['id_publicacion'] ?>">Leer más</a>
           </div>
         </article>
 <?php endforeach; ?>
@@ -109,4 +86,4 @@ require __DIR__ . '/includes/header.php';
 
 </main>
 
-<?php require __DIR__ . '/includes/footer.php'; ?>
+<?php require __DIR__ . '/../includes/footer.php'; ?>

@@ -24,45 +24,45 @@ require __DIR__ . '/includes/header.php';
           <h2 class="h4" id="map-principal">Principal</h2>
           <ul class="mb-0">
             <li><a href="<?= $base ?>index.php">Inicio</a></li>
-            <li><a href="<?= $base ?>nuevo-ingreso.php">Nuevo ingreso</a></li>
-            <li><a href="<?= $base ?>documentos.php">Documentos</a></li>
-            <li><a href="<?= $base ?>noticias.php">Noticias y avisos</a></li>
+            <li><a href="<?= $base ?>pages/nuevo-ingreso.php">Nuevo ingreso</a></li>
+            <li><a href="<?= $base ?>pages/documentos.php">Documentos</a></li>
+            <li><a href="<?= $base ?>pages/noticias.php">Noticias y avisos</a></li>
           </ul>
         </section>
 
         <section class="col" aria-labelledby="map-nosotros">
           <h2 class="h4" id="map-nosotros">Nosotros</h2>
           <ul class="mb-0">
-            <li><a href="<?= $base ?>nosotros.php">Misión, visión e historia</a></li>
-            <li><a href="<?= $base ?>personal.php">Personal y directorio</a></li>
+            <li><a href="<?= $base ?>pages/nosotros.php">Misión, visión e historia</a></li>
+            <li><a href="<?= $base ?>pages/personal.php">Personal y directorio</a></li>
           </ul>
         </section>
 
         <section class="col" aria-labelledby="map-vida">
           <h2 class="h4" id="map-vida">Vida estudiantil</h2>
           <ul class="mb-0">
-            <li><a href="<?= $base ?>clubes.php">Clubes y actividades</a></li>
-            <li><a href="<?= $base ?>servicios.php">Servicios</a></li>
-            <li><a href="<?= $base ?>galeria.php">Galería</a></li>
-            <li><a href="<?= $base ?>productos.php">Productos</a></li>
+            <li><a href="<?= $base ?>pages/clubes.php">Clubes y actividades</a></li>
+            <li><a href="<?= $base ?>pages/servicios.php">Servicios</a></li>
+            <li><a href="<?= $base ?>pages/galeria.php">Galería</a></li>
+            <li><a href="<?= $base ?>pages/productos.php">Productos</a></li>
           </ul>
         </section>
 
         <section class="col" aria-labelledby="map-mas">
           <h2 class="h4" id="map-mas">Más</h2>
           <ul class="mb-0">
-            <li><a href="<?= $base ?>materiales.php">Materiales educativos</a></li>
-            <li><a href="<?= $base ?>solicitudes.php">Solicitudes en línea</a></li>
+            <li><a href="<?= $base ?>pages/materiales.php">Materiales educativos</a></li>
+            <li><a href="<?= $base ?>pages/solicitudes.php">Solicitudes en línea</a></li>
             <li><a href="<?= $base ?>enlaces.php">Enlaces de interés</a></li>
-            <li><a href="<?= $base ?>contacto.php">Contacto</a></li>
+            <li><a href="<?= $base ?>pages/contacto.php">Contacto</a></li>
           </ul>
         </section>
 
         <section class="col" aria-labelledby="map-alumnos">
           <h2 class="h4" id="map-alumnos">Alumnos</h2>
           <ul class="mb-0">
-            <li><a href="<?= $base ?>acceso.php">Acceso alumnos</a></li>
-            <li><a href="<?= $base ?>recuperar.php">Recuperar contraseña</a></li>
+            <li><a href="<?= $base ?>pages/acceso.php">Acceso alumnos</a></li>
+            <li><a href="<?= $base ?>panel/recuperar.php">Recuperar contraseña</a></li>
           </ul>
         </section>
 

@@ -44,7 +44,7 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
               <div class="col-md-4">
                 <label class="form-label" for="tipo">Área *</label>
                 <select class="form-select<?= isset($errors['tipo']) ? ' is-invalid' : '' ?>" id="tipo" name="tipo" required>
-<?php foreach (['Directivo', 'Docente', 'Departamento'] as $type): ?>
+<?php foreach ($types as $type): ?>
                   <option value="<?= $type ?>"<?= $person['tipo'] === $type ? ' selected' : '' ?>><?= $type ?></option>
 <?php endforeach; ?>
                 </select>
