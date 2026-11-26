@@ -30,4 +30,4 @@ $noindex     = $noindex ?? false;
   <link rel="stylesheet" href="<?= $base ?>assets/css/<?= $style ?>">
 <?php endforeach; ?>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">

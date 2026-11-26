@@ -2,15 +2,10 @@
 require __DIR__ . '/../../../includes/panel-auth.php';
 panel_require_login();
 
-require_once __DIR__ . '/../../../config/conexion.php';
+// Datos que muestra la pantalla
+require __DIR__ . '/../../../backend/panel/contenido/carrusel-datos.php';
 
-$maxVisible = 5;   // más slides en el inicio se vuelve pesado: se pide ocultar uno antes
-
-$sql       = "SELECT * FROM tblweb_carrusel ORDER BY orden ASC, id_carrusel DESC";
-$resultado = mysqli_query($conexion, $sql);
-$total     = mysqli_num_rows($resultado);
-$today     = date('Y-m-d');
-
+// Configuración de la página
 $base      = '../../../';
 $title     = 'Carrusel del inicio · Panel de administración';
 $styles    = ['pages/panel.css'];
@@ -47,7 +42,7 @@ require __DIR__ . '/../../../includes/panel-layout-start.php';
               </tr>
             </thead>
             <tbody>
-<?php while ($slide = mysqli_fetch_assoc($resultado)): ?>
+<?php foreach ($slides as $slide): ?>
 <?php
 if (!$slide['visible']) {
     $status = ['Oculto', 'text-bg-secondary'];
@@ -56,7 +51,7 @@ if (!$slide['visible']) {
 } else {
     $status = ['Visible', 'text-bg-success'];
 }
-$image = $slide['imagen'] ? $base . 'uploads/carrusel/' . $slide['imagen'] : $base . 'assets/img/placeholder.svg';
+$image = siteFile($slide['imagen'], $base);
 ?>
               <tr>
                 <td><img class="rounded" src="<?= e($image) ?>" width="96" height="54" alt="<?= e($slide['imagen_alt'] ?: 'Foto por agregar') ?>"></td>
@@ -82,7 +77,7 @@ $image = $slide['imagen'] ? $base . 'uploads/carrusel/' . $slide['imagen'] : $ba
                   </div>
                 </td>
               </tr>
-<?php endwhile; ?>
+<?php endforeach; ?>
             </tbody>
           </table>
         </div>
@@ -94,7 +89,7 @@ $image = $slide['imagen'] ? $base . 'uploads/carrusel/' . $slide['imagen'] : $ba
       <!-- Ventana: confirmar eliminar -->
       <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-title" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-          <form class="modal-content" action="eliminar.php" method="post">
+          <form class="modal-content" action="../../../backend/panel/contenido/carrusel-eliminar.php" method="post">
             <input type="hidden" name="id">
             <div class="modal-header">
               <h2 class="modal-title h5 fw-bold" id="delete-modal-title">¿Eliminar slide?</h2>

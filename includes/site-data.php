@@ -49,6 +49,18 @@ function siteFile(?string $path, string $base): string
     return preg_match('#^https?://#i', $path) ? $path : $base . ltrim($path, '/');
 }
 
+// Texto → minúsculas, sin acentos ni símbolos, con guiones (para nombres de archivo). Máximo 40 letras.
+function slugify(string $text, string $fallback = 'archivo'): string
+{
+    $plain = strtr($text, [
+        'á' => 'a', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ü' => 'u', 'ñ' => 'n',
+        'Á' => 'a', 'É' => 'e', 'Í' => 'i', 'Ó' => 'o', 'Ú' => 'u', 'Ü' => 'u', 'Ñ' => 'n',
+    ]);
+    $slug = trim(preg_replace('/[^a-z0-9]+/', '-', strtolower($plain)), '-');
+
+    return substr($slug !== '' ? $slug : $fallback, 0, 40);
+}
+
 // Enlace de YouTube o Vimeo → enlace para insertarlo en la página (iframe). Otro enlace: devuelve ''.
 function videoEmbedUrl(string $url): string
 {

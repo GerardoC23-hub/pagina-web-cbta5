@@ -7,6 +7,7 @@ La base de datos guarda **solo la ruta** del archivo; el archivo vive en estas c
 | `uploads/publicaciones`| imagen de noticias y avisos         | `tblpublicaciones.imagen`                |
 | `uploads/carreras`     | imagen de cada carrera              | `tblcarreras.imagen`                     |
 | `uploads/personal`     | foto del personal autorizado        | `tblpersonal.foto`                       |
+| `uploads/carrusel`| imágenes del carrusel del inicio | `tblweb_carrusel.imagen` |
 | `uploads/galeria/fotos`| fotos de la galería                 | `tblgaleria.archivo` (tipo Foto)         |
 | `uploads/galeria/videos`| videos de la galería               | `tblgaleria.archivo` (tipo Video)        |
 | `uploads/galeria/miniaturas`| portada de cada video          | `tblgaleria.miniatura`                   |
