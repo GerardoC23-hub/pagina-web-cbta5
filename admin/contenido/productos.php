@@ -2,28 +2,14 @@
 require __DIR__ . '/../../includes/panel-auth.php';
 panel_require_login();
 
-$base = '../../';
+// Datos que muestra la pantalla
+require __DIR__ . '/../../backend/admin/contenido/productos-datos.php';
 
-// Resumen de ejemplo
-$summary = [
-  ['number' => 1, 'label' => 'mensajes y solicitudes nuevos'],
-  ['number' => 0, 'label' => 'noticias en borrador'],
-  ['number' => 8, 'label' => 'documentos'],
-];
-
-// Datos de ejemplo del diseño
-$products = [
-  ['name' => 'Productos agrícolas', 'price' => 'Desde $25', 'availability' => 'Venta en el plantel'],
-  ['name' => 'Abono',               'price' => 'Desde $25', 'availability' => 'Venta en el plantel'],
-  ['name' => 'Plantas',             'price' => 'Desde $25', 'availability' => 'Venta en el plantel'],
-  ['name' => 'Conejos',             'price' => 'Desde $25', 'availability' => 'Venta en el plantel'],
-  ['name' => 'Huevo',               'price' => 'Desde $25', 'availability' => 'Venta en el plantel'],
-  ['name' => 'Codorniz',            'price' => 'Desde $25', 'availability' => 'Venta en el plantel'],
-  ['name' => 'Queso',               'price' => 'Desde $25', 'availability' => 'Venta en el plantel'],
-];
-
+// Configuración de la página
+$base      = '../../';
 $title     = 'Productos · Panel de administración';
 $styles    = ['pages/panel.css'];
+$scripts   = ['panel-forms.js'];
 $withSite  = false;
 $noindex   = true;
 $panelPage = 'productos';
@@ -34,17 +20,6 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
 
       <h1 class="fw-bold mb-2">Gestionar contenido</h1>
       <p class="text-secondary mb-4">Crea, edita, publica y elimina contenido. Lo publicado se ve de inmediato en el sitio.</p>
-
-      <div class="row g-3 mb-4">
-<?php foreach ($summary as $item): ?>
-        <div class="col-12 col-md-4 col-xl-3">
-          <div class="rounded bg-success-subtle p-3 h-100">
-            <p class="h2 fw-bold mb-0"><?= $item['number'] ?></p>
-            <p class="small fw-bold mb-0"><?= $item['label'] ?></p>
-          </div>
-        </div>
-<?php endforeach; ?>
-      </div>
 
       <nav aria-label="Módulos de contenido">
         <ul class="nav nav-underline border-bottom mb-4">
@@ -57,17 +32,17 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
       </nav>
 
       <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
-        <p class="small text-secondary mb-0"><?= count($products) ?> productos</p>
-        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#product-modal">Nuevo producto</button>
+        <p class="small text-secondary mb-0"><?= $total ?> <?= $total === 1 ? 'producto' : 'productos' ?></p>
+        <a class="btn btn-primary" href="productos-formulario.php">Nuevo producto</a>
       </div>
 
+<?php if ($total > 0): ?>
       <div class="table-responsive border rounded bg-white">
         <table class="table align-middle mb-0">
           <thead class="table-light">
             <tr>
               <th scope="col">Producto</th>
               <th scope="col">Precio</th>
-              <th scope="col">Disponibilidad</th>
               <th scope="col">Estado</th>
               <th scope="col">Acciones</th>
             </tr>
@@ -75,15 +50,23 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
           <tbody>
 <?php foreach ($products as $product): ?>
             <tr>
-              <th scope="row"><?= $product['name'] ?></th>
-              <td><?= $product['price'] ?></td>
-              <td><?= $product['availability'] ?></td>
-              <td><span class="badge rounded-pill bg-success-subtle text-success-emphasis">Publicado</span></td>
+              <th scope="row"><?= e($product['nombre']) ?></th>
+              <td><?= e($product['price_text']) ?: '—' ?></td>
               <td>
-                <div class="d-flex flex-wrap gap-2">
-                  <button class="btn btn-outline-primary" type="button">Editar</button>
-                  <button class="btn btn-outline-primary" type="button">Despublicar</button>
-                  <button class="btn btn-danger" type="button">Eliminar</button>
+<?php if ($product['disponible']): ?>
+                <span class="badge rounded-pill bg-success-subtle text-success-emphasis">Publicado</span>
+<?php else: ?>
+                <span class="badge rounded-pill bg-secondary-subtle text-secondary-emphasis">Borrador</span>
+<?php endif; ?>
+              </td>
+              <td>
+                <div class="d-flex gap-2">
+                  <a class="btn btn-outline-primary" href="productos-formulario.php?id=<?= (int) $product['id_producto'] ?>">Editar</a>
+                  <form action="../../backend/admin/contenido/productos-estado.php" method="post">
+                    <input type="hidden" name="id" value="<?= (int) $product['id_producto'] ?>">
+                    <button class="btn btn-outline-primary" type="submit"><?= $product['disponible'] ? 'Despublicar' : 'Publicar' ?></button>
+                  </form>
+                  <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#delete-modal" data-record="<?= e(json_encode(['id' => $product['id_producto'], 'name' => $product['nombre']], JSON_UNESCAPED_UNICODE)) ?>">Eliminar</button>
                 </div>
               </td>
             </tr>
@@ -91,53 +74,25 @@ require __DIR__ . '/../../includes/panel-layout-start.php';
           </tbody>
         </table>
       </div>
+<?php else: ?>
+      <div class="alert alert-info" role="status">No hay productos todavía. Usa «Nuevo producto» para crear el primero.</div>
+<?php endif; ?>
 
-      <!-- Ventana del formulario: se abre con "Nuevo producto" -->
-      <div class="modal fade" id="product-modal" tabindex="-1" aria-labelledby="product-modal-title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-          <form class="modal-content">
-
+      <!-- Ventana: confirmar eliminar -->
+      <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <form class="modal-content" action="../../backend/admin/contenido/productos-eliminar.php" method="post">
+            <input type="hidden" name="id">
             <div class="modal-header">
-              <h2 class="modal-title h4 fw-bold" id="product-modal-title">Nuevo: producto</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              <h2 class="modal-title h5 fw-bold" id="delete-modal-title">¿Eliminar producto?</h2>
+              <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
-
             <div class="modal-body">
-              <p class="small text-body-secondary">Los campos marcados con * son obligatorios.</p>
-
-              <div class="mb-3">
-                <label class="form-label" for="product-name">Nombre del producto *</label>
-                <input class="form-control" id="product-name" type="text" maxlength="100">
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label" for="product-description">Descripción *</label>
-                <textarea class="form-control" id="product-description" rows="4"></textarea>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label" for="product-price">Precio *</label>
-                <input class="form-control" id="product-price" type="text" maxlength="50" value="Por confirmar">
-                <div class="form-text">Puedes escribir «Por confirmar».</div>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label" for="product-availability">Disponibilidad *</label>
-                <input class="form-control" id="product-availability" type="text" maxlength="100" value="Venta en el plantel">
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label" for="product-status">Estado *</label>
-                <select class="form-select" id="product-status">
-                  <option value="draft">Borrador</option>
-                  <option value="published">Publicado</option>
-                </select>
-              </div>
+              <p class="mb-0">Vas a eliminar «<strong data-fill="name"></strong>» y su foto. Esta acción no se puede deshacer.</p>
             </div>
-
-            <div class="modal-footer justify-content-start">
-              <button class="btn btn-primary" type="button" data-bs-dismiss="modal">Guardar</button>
+            <div class="modal-footer">
               <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">Cancelar</button>
+              <button class="btn btn-danger" type="submit">Sí, eliminar</button>
             </div>
           </form>
         </div>
