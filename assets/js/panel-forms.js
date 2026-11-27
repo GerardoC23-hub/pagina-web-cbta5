@@ -128,13 +128,6 @@
     });
   });
 
-  // Avisos de éxito: se cierran solos a los 4 segundos (los de error se quedan hasta que se cierran)
-  document.querySelectorAll('.alert[data-auto-dismiss]').forEach(function (alert) {
-    setTimeout(function () {
-      if (document.body.contains(alert)) { bootstrap.Alert.getOrCreateInstance(alert).close(); }
-    }, 4000);
-  });
-
   // Error de un campo: se quita en cuanto la persona empieza a corregirlo
   document.querySelectorAll('form.needs-validation .is-invalid').forEach(function (field) {
     field.addEventListener('input', function () { field.classList.remove('is-invalid'); });

@@ -55,7 +55,7 @@ $initial   = mb_strtoupper(mb_substr($user['name'], 0, 1));
 
     <main class="p-3 p-lg-5" id="principal">
 <?php if (!empty($_SESSION['flash'])): ?>
-      <div class="alert alert-<?= e($_SESSION['flash']['type']) ?> alert-dismissible fade show" role="<?= $_SESSION['flash']['type'] === 'danger' ? 'alert' : 'status' ?>"<?= $_SESSION['flash']['type'] === 'success' ? ' data-auto-dismiss' : '' ?>>
+      <div class="alert alert-<?= e($_SESSION['flash']['type']) ?> alert-dismissible fade show" role="<?= $_SESSION['flash']['type'] === 'danger' ? 'alert' : 'status' ?>">
         <?= e($_SESSION['flash']['text']) ?>
         <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Cerrar"></button>
       </div>

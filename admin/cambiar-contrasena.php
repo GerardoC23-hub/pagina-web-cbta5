@@ -72,6 +72,7 @@ require __DIR__ . '/../includes/head.php';
 
 </main>
 
+<script src="<?= $base ?>assets/js/alert-dismiss.js"></script>
 <script src="<?= $base ?>assets/js/password-toggle.js"></script>
 </body>
 </html>
