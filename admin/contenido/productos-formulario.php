@@ -1,0 +1,116 @@
+<?php
+require __DIR__ . '/../../includes/panel-auth.php';
+panel_require_login();
+
+// Datos que muestra la pantalla
+require __DIR__ . '/../../backend/admin/contenido/productos-formulario-datos.php';
+
+// Configuración de la página
+$base      = '../../';
+$title     = ($isEditing ? 'Editar producto' : 'Nuevo producto') . ' · Panel de administración';
+$styles    = ['pages/panel.css'];
+$scripts   = ['panel-forms.js'];
+$withSite  = false;
+$noindex   = true;
+$panelPage = 'productos';
+
+require __DIR__ . '/../../includes/head.php';
+require __DIR__ . '/../../includes/panel-layout-start.php';
+?>
+
+      <h1 class="h3 fw-bold border-start border-4 border-danger ps-3"><?= $isEditing ? 'Editar producto' : 'Nuevo producto' ?></h1>
+      <p class="text-secondary mb-4">Los campos marcados con * son obligatorios.</p>
+
+<?php if ($error !== ''): ?>
+      <div class="alert alert-danger" role="alert"><?= e($error) ?></div>
+<?php endif; ?>
+
+      <form class="needs-validation" action="../../backend/admin/contenido/productos-guardar.php" method="post" enctype="multipart/form-data" novalidate>
+<?php if ($isEditing): ?>
+        <input type="hidden" name="id" value="<?= (int) $id ?>">
+<?php endif; ?>
+
+        <section class="card mb-4" aria-labelledby="data-title">
+          <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3" id="data-title">Datos del producto</h2>
+            <div class="row g-3">
+
+              <div class="col-12">
+                <label class="form-label" for="nombre">Nombre del producto *</label>
+                <input class="form-control<?= isset($errors['nombre']) ? ' is-invalid' : '' ?>" id="nombre" name="nombre" type="text" minlength="3" maxlength="100" value="<?= e($record['nombre']) ?>" required>
+                <div class="invalid-feedback"><?= e($errors['nombre'] ?? 'Nombre: de 3 a 100 caracteres.') ?></div>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label" for="descripcion">Descripción *</label>
+                <textarea class="form-control<?= isset($errors['descripcion']) ? ' is-invalid' : '' ?>" id="descripcion" name="descripcion" rows="4" minlength="10" maxlength="255" required><?= e($record['descripcion']) ?></textarea>
+                <div class="form-text">De 10 a 255 caracteres.</div>
+                <div class="invalid-feedback"><?= e($errors['descripcion'] ?? 'Descripción: de 10 a 255 caracteres.') ?></div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="precio">Precio</label>
+                <input class="form-control<?= isset($errors['precio']) ? ' is-invalid' : '' ?>" id="precio" name="precio" type="number" min="0" max="99999999.99" step="0.01" value="<?= e($record['precio']) ?>">
+                <div class="form-text">Déjalo vacío si el precio se confirma directamente.</div>
+                <div class="invalid-feedback"><?= e($errors['precio'] ?? 'Precio: escribe un número, por ejemplo 25 o 25.50.') ?></div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="unidad">Unidad</label>
+                <input class="form-control<?= isset($errors['unidad']) ? ' is-invalid' : '' ?>" id="unidad" name="unidad" type="text" maxlength="30" value="<?= e($record['unidad']) ?>" placeholder="Ej. kg, pieza, litro">
+                <div class="invalid-feedback"><?= e($errors['unidad'] ?? 'Unidad: máximo 30 caracteres.') ?></div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label" for="estado">Estado *</label>
+                <select class="form-select<?= isset($errors['estado']) ? ' is-invalid' : '' ?>" id="estado" name="estado" required>
+<?php foreach ($states as $option): ?>
+                  <option value="<?= $option ?>"<?= $record['estado'] === $option ? ' selected' : '' ?>><?= $option ?></option>
+<?php endforeach; ?>
+                </select>
+                <div class="invalid-feedback"><?= e($errors['estado'] ?? 'Elige un estado.') ?></div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <section class="card mb-4" aria-labelledby="photo-title">
+          <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3" id="photo-title">Foto</h2>
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label" for="imagen">Foto (opcional)</label>
+<?php if ($record['imagen']): ?>
+                <img class="d-block rounded mb-2" src="<?= e($base . $record['imagen']) ?>" width="192" height="108" alt="Foto actual del producto">
+<?php endif; ?>
+                <input class="form-control<?= isset($errors['imagen']) ? ' is-invalid' : '' ?>" id="imagen" name="imagen" type="file" accept="image/jpeg,image/png,image/webp" data-max-mb="1">
+                <div class="form-text">JPG, PNG o WebP. Máximo 1 MB.<?= $record['imagen'] ? ' Déjala vacía para conservar la actual.' : '' ?></div>
+                <div class="invalid-feedback"><?= e($errors['imagen'] ?? 'Formato no válido (JPG, PNG o WebP).') ?></div>
+<?php if ($record['imagen']): ?>
+                <div class="form-check mt-2">
+                  <input class="form-check-input" id="quitar_imagen" name="quitar_imagen" type="checkbox" value="1">
+                  <label class="form-check-label" for="quitar_imagen">Quitar la foto actual</label>
+                </div>
+<?php endif; ?>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label" for="imagen_credito">Crédito de la foto</label>
+                <input class="form-control<?= isset($errors['imagen_credito']) ? ' is-invalid' : '' ?>" id="imagen_credito" name="imagen_credito" type="text" maxlength="120" value="<?= e($record['imagen_credito']) ?>">
+                <div class="form-text">Quién la tomó. Obligatorio si hay foto.</div>
+                <div class="invalid-feedback"><?= e($errors['imagen_credito'] ?? 'Escribe el autor de la foto.') ?></div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <div class="d-flex flex-wrap gap-3">
+          <button class="btn btn-primary" type="submit"><?= $isEditing ? 'Guardar cambios' : 'Guardar' ?></button>
+          <a class="btn btn-outline-primary" href="productos.php">Cancelar</a>
+        </div>
+      </form>
+
+<?php require __DIR__ . '/../../includes/panel-layout-end.php'; ?>
